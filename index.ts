@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import * as mysql from "mysql"; // MySQLの型定義をインポート
+import axios from "axios";
 
 const app = express();
 app.set("view engine", "ejs");
@@ -34,11 +35,9 @@ app.get("/api/notes", (req, res) => {
   db.query("SELECT * FROM notes", (error, results) => {
     if (error) {
       console.error("Error querying the database: " + error.message);
-      res
-        .status(500)
-        .json({
-          error: "An error occurred while fetching data from the database.",
-        });
+      res.status(500).json({
+        error: "An error occurred while fetching data from the database.",
+      });
     } else {
       res.json(results);
     }
@@ -46,12 +45,17 @@ app.get("/api/notes", (req, res) => {
 });
 
 //indexへ一覧データを渡す
-// app.get("/", (req, res) => {
-//   db.query("select*from notes", (error, results) => {
-//     console.log(results);
-//     res.render("index", { notes: results });
-//   });
-// });
+app.get("/", (req, res) => {
+  axios
+    .get("http://localhost:3001/api/notes")
+    .then((response) => {
+      const notes = response.data;
+      res.render("index", { notes });
+    })
+    .catch((err) => {
+      console.log("エラーです", err);
+    });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
