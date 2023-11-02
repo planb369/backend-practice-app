@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import * as mysql from "mysql"; // MySQLの型定義をインポート
+import axios from "axios";
 
 const app = express();
 app.set("view engine", "ejs");
@@ -41,6 +42,19 @@ app.get("/api/notes", (req, res) => {
       res.json(results);
     }
   });
+});
+
+//indexへ一覧データを渡す
+app.get("/", (req, res) => {
+  axios
+    .get("http://localhost:3001/api/notes")
+    .then((response) => {
+      const notes = response.data;
+      res.render("index", { notes });
+    })
+    .catch((err) => {
+      console.log("エラーです", err);
+    });
 });
 
 app.listen(port, () => {

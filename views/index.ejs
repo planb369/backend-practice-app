@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>SAMPLE</title>
+  </head>
+  <body>
+    <ul>
+      <% notes.forEach((note) => { %>
+      <li>
+        <div>
+          <span><%= note.id %></span>
+          <span><%= note.content %></span>
+        </div>
+      </li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
