@@ -9,16 +9,9 @@ type Row = {
 
 export class Note {
   //プロパティ
-  id: number;
-  title: string;
-  content: string;
-
-  // コンストラクターでプロパティの初期化
-  constructor() {
-    this.id = 0;
-    this.title = "";
-    this.content = "";
-  }
+  id?: number;
+  title?: string;
+  content?: string;
 
   // データ一覧取得
   static search(): Promise<Note[]> {
