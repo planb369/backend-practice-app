@@ -29,13 +29,29 @@ db.connect((err) => {
   }
 });
 
-//indexへ一覧データを渡す
-app.get("/", (req, res) => {
-  db.query("select*from notes", (error, results) => {
-    console.log(results);
-    res.render("index", { notes: results });
+// APIのエンドポイントを追加
+app.get("/api/notes", (req, res) => {
+  db.query("SELECT * FROM notes", (error, results) => {
+    if (error) {
+      console.error("Error querying the database: " + error.message);
+      res
+        .status(500)
+        .json({
+          error: "An error occurred while fetching data from the database.",
+        });
+    } else {
+      res.json(results);
+    }
   });
 });
+
+//indexへ一覧データを渡す
+// app.get("/", (req, res) => {
+//   db.query("select*from notes", (error, results) => {
+//     console.log(results);
+//     res.render("index", { notes: results });
+//   });
+// });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
