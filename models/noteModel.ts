@@ -1,11 +1,7 @@
-import "dotenv/config";
-import express, { Request, Response } from "express";
-import * as mysql from "mysql"; // MySQLの型定義をインポート
-import axios from "axios";
+import * as mysql from "mysql";
+import dotenv from "dotenv";
 
-const app = express();
-app.set("view engine", "ejs");
-const port = 3001;
+dotenv.config();
 
 const dbHost = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
@@ -21,7 +17,6 @@ const db = mysql.createConnection({
   database: dbName,
 });
 
-// DB接続
 db.connect((err) => {
   if (err) {
     console.error("Error connecting to database: " + err.message);
@@ -29,3 +24,5 @@ db.connect((err) => {
     console.log("Connected to database");
   }
 });
+
+export default db;
