@@ -1,9 +1,9 @@
 import express from "express";
-import * as notesController from "../controllers/noteController";
+import { NoteController } from "../controllers/noteController";
 
 const router = express.Router();
 
 //データの一覧取得
-router.get("/api/notes", notesController.getNotes);
+router.get("/api/notes", NoteController.getNotes);
 
 export default router;

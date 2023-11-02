@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
 
-// データ一覧の取得
-export const getNotes = (req: Request, res: Response) => {
-  Note.search()
-    .then((results) => {
-      //jsonで返す
+export class NoteController {
+  // データ一覧の取得
+  static async getNotes(req: Request, res: Response) {
+    try {
+      //モデルからデータもらう
+      const results = await Note.search();
+      // JSONでデータを返す
       res.json(results);
-    })
-    .catch((error) => {
-      console.error("データを取得できませんでした: " + error.message);
-    });
-};
+    } catch {
+      console.error("データを取得できませんでした");
+    }
+  }
+}
