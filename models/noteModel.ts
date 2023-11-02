@@ -1,4 +1,4 @@
-import db from "./db";
+import db from "../db";
 
 //データ一覧取得sql
 export const getNotesModel = () => {
