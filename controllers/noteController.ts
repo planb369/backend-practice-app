@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import db from "../models/noteModel";
+import db from "../models/db";
 
 // データ一覧の取得
 export const getNotes = (req: Request, res: Response) => {
