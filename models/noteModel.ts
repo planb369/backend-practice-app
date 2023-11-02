@@ -18,7 +18,7 @@ export class Note {
     return new Promise((resolve, reject) => {
       db.query("SELECT * FROM notes", (error, results) => {
         if (error) {
-          reject(error);
+          return reject(error); //returnで処理中断させる
         } else {
           //一行ずつインスタンスにマッピング
           const notes: Note[] = results.map((row: Row) => {
@@ -28,7 +28,7 @@ export class Note {
             note.content = row.content;
             return note;
           });
-          resolve(notes); //配列で返す
+          return resolve(notes); //配列で返す
         }
       });
     });
