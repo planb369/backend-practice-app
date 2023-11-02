@@ -3,13 +3,13 @@ import { Note } from "../models/noteModel";
 
 export class NoteController {
   // データ一覧の取得
-  static async getNotes(req: Request, res: Response) {
+  async getNotes(req: Request, res: Response) {
     try {
-      //モデルからデータもらう
+      // モデルからデータを取得
       const results = await Note.search();
       // JSONでデータを返す
       res.json(results);
-    } catch {
+    } catch (error) {
       console.error("データを取得できませんでした");
     }
   }
