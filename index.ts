@@ -3,7 +3,8 @@ import express, { Request, Response } from "express";
 import * as mysql from "mysql"; // MySQLの型定義をインポート
 
 const app = express();
-const port = 3000;
+app.set("view engine", "ejs");
+const port = 3001;
 
 const dbHost = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
@@ -28,8 +29,12 @@ db.connect((err) => {
   }
 });
 
+//indexへ一覧データを渡す
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  db.query("select*from notes", (error, results) => {
+    console.log(results);
+    res.render("index", { notes: results });
+  });
 });
 
 app.listen(port, () => {

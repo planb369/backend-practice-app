@@ -5,6 +5,15 @@
     <title>SAMPLE</title>
   </head>
   <body>
-    <p>ddddd</p>
+    <ul>
+      <% notes.forEach((note) => { %>
+      <li>
+        <div>
+          <span><%= note.id %></span>
+          <span><%= note.content %></span>
+        </div>
+      </li>
+      <% }) %>
+    </ul>
   </body>
 </html>
