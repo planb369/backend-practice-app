@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import * as mysql from "mysql"; // MySQLの型定義をインポート
+import axios from "axios";
 
 const app = express();
 app.set("view engine", "ejs");
@@ -27,22 +28,4 @@ db.connect((err) => {
   } else {
     console.log("Connected to database");
   }
-});
-
-// APIのエンドポイントを追加
-app.get("/api/notes", (req, res) => {
-  db.query("SELECT * FROM notes", (error, results) => {
-    if (error) {
-      console.error("Error querying the database: " + error.message);
-      res.status(500).json({
-        error: "An error occurred while fetching data from the database.",
-      });
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
 });
