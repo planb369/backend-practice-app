@@ -8,9 +8,12 @@ export class NoteController {
       // モデルからデータを取得
       const results = await Note.search();
       // JSONでデータを返す
-      res.json(results);
-    } catch (error) {
+      return res.json(results);
+    } catch {
       console.error("データを取得できませんでした");
+      return res.status(500).json({
+        error: "データを取得できませんでした",
+      });
     }
   }
 }
