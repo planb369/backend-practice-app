@@ -19,11 +19,6 @@ const db = mysql.createConnection({
   database: dbName,
 });
 
-console.log(dbHost);
-console.log(dbUser);
-console.log(dbPassword);
-console.log(dbName);
-
 // DB接続
 db.connect((err) => {
   if (err) {
@@ -31,6 +26,10 @@ db.connect((err) => {
   } else {
     console.log("Connected to database");
   }
+});
+
+app.get("/", (req, res) => {
+  res.render("index.ejs");
 });
 
 app.listen(port, () => {
