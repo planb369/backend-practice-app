@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { getNotesModel } from "../models/noteModel";
+import { Note } from "../models/noteModel";
 
 // データ一覧の取得
 export const getNotes = (req: Request, res: Response) => {
-  getNotesModel()
+  Note.search()
     .then((results) => {
       //jsonで返す
       res.json(results);
