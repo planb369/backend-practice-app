@@ -16,7 +16,7 @@ export class Note {
   // データ一覧取得
   static search(): Promise<Note[]> {
     return new Promise((resolve, reject) => {
-      //return reject(new Error("test"));//テスト用
+      //return reject(new Error("test")); //テスト用
       db.query("SELECT * FROM notes", (error, results) => {
         if (error) {
           return reject(error); //returnで処理中断させる
