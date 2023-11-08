@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
-import { HTTP_STATUS } from "../httpStatus";
+import { HTTP_STATUS } from "../constants/httpStatus";
 import { BadRequestError } from "../errors/BadRequestError";
 
 export class NoteController {
