@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { NoteModel } from "../models/NoteModel";
+import { NoteModel } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
 import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { HTTP_STATUS_MESSAGE } from "../httpStatus/HTTP_STATUS_MESSAGE";
