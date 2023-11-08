@@ -46,21 +46,23 @@ export class Note {
         "SELECT*FROM notes where id=?",
         [id],
         (error, results: mysql.RowDataPacket[]) => {
+          //該当データがデータベースにないとき
+          if (results.length === 0) {
+            return resolve(null);
+          }
           if (error) {
             return reject(error);
           }
-          if (results.length === 0) {
-            //該当データがないとき
-            return resolve(null);
-          }
-          const row = results[0];
 
+          //データベースに対象データがあったとき
+          const row = results[0];
+          //マッピングするためにNodeをインスタンス化
           const note = new Note();
           note.id = row.id;
           note.title = row.title;
           note.content = row.content;
 
-          return resolve(note); // データを返す
+          return resolve(note);
         }
       );
     });
