@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
+import { NotFoundError } from "../errors/NotFoundError";
+
+const httpStatus_notFound = 404;
+const httpStatus_internalServerError = 500;
 
 export class NoteController {
   // データ一覧の取得
@@ -12,7 +16,7 @@ export class NoteController {
     } catch (err) {
       if (err instanceof Error) {
         console.error("データを取得できませんでした:", err.message);
-        return res.status(500).json({
+        return res.status(httpStatus_internalServerError).json({
           error: "データを取得できませんでした",
           details: err.message,
         });
@@ -27,12 +31,24 @@ export class NoteController {
       const id = parseInt(idParam);
 
       const result = await Note.find(id);
+
+      if (!result) {
+        //対象のデータがない場合NotFoundErrorをthrow
+        throw new NotFoundError(`${id}番のデータは存在しません`);
+      }
+
       return res.json(result);
     } catch (err) {
+      if (err instanceof NotFoundError) {
+        return res.status(httpStatus_notFound).json({
+          error: "404 Not Found",
+          details: err.message,
+        });
+      }
       if (err instanceof Error) {
         console.error("データを取得できませんでした:", err.message);
-        return res.status(500).json({
-          error: "データを取得できませんでした",
+        return res.status(httpStatus_internalServerError).json({
+          error: "500 Internal Server Error",
           details: err.message,
         });
       }
