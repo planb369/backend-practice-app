@@ -1,14 +1,14 @@
 import db from "../config/db";
 import * as mysql from "mysql2";
 
-export class Note {
+export class NoteModel {
   //プロパティ
   id?: number;
   title?: string;
   content?: string;
 
   // データ一覧取得
-  static search(): Promise<Note[]> {
+  static search(): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
       db.query(
@@ -18,8 +18,8 @@ export class Note {
             return reject(error); //returnで処理中断させる
           }
           //一行ずつインスタンスにマッピング
-          const notes: Note[] = results.map((row: mysql.RowDataPacket) => {
-            const note = new Note();
+          const notes: NoteModel[] = results.map((row: mysql.RowDataPacket) => {
+            const note = new NoteModel();
             note.id = row.id;
             note.title = row.title;
             note.content = row.content;
@@ -33,7 +33,7 @@ export class Note {
   }
 
   //詳細情報の取得
-  static find(id: number): Promise<Note | null> {
+  static find(id: number): Promise<NoteModel | null> {
     return new Promise((resolve, reject) => {
       db.query(
         "SELECT * FROM notes WHERE id = ?",
@@ -50,7 +50,7 @@ export class Note {
           //データベースに対象データがあったとき
           const row = results[0];
           //マッピングするためにNodeをインスタンス化
-          const note = new Note();
+          const note = new NoteModel();
           note.id = row.id;
           note.title = row.title;
           note.content = row.content;

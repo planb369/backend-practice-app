@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Note } from "../models/noteModel";
+import { NoteModel } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
 import { HTTP_STATUS } from "../httpStatus/httpStatusCodes";
 import { HTTP_STATUS_MESSAGE } from "../httpStatus/httpStatusMessages";
@@ -10,7 +10,7 @@ export class NoteController {
   async getNotes(req: Request, res: Response) {
     try {
       // モデルからデータを取得
-      const results = await Note.search();
+      const results = await NoteModel.search();
       // JSONでデータを返す
       return res.status(HTTP_STATUS.OK).json(results);
     } catch (err) {
@@ -36,7 +36,7 @@ export class NoteController {
       if (isNaN(id) || id <= 0) {
         throw new BadRequestError("URLが不正です");
       }
-      const result = await Note.find(id);
+      const result = await NoteModel.find(id);
 
       if (!result) {
         //対象のデータがない場合NotFoundErrorをthrow
