@@ -33,4 +33,16 @@ export class Note {
       });
     });
   }
+
+  //詳細情報の取得
+  static find(id: number): Promise<Note> {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT*FROM notes where id=${id}`, (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(results);
+      });
+    });
+  }
 }
