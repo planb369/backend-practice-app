@@ -11,7 +11,7 @@ export class NoteController {
       // モデルからデータを取得
       const results = await Note.search();
       // JSONでデータを返す
-      return res.json(results);
+      return res.status(HTTP_STATUS.OK).json(results);
     } catch (err) {
       if (err instanceof Error) {
         console.error("500 Internal Server Error : ", err.message);
@@ -42,7 +42,7 @@ export class NoteController {
         throw new NotFoundError(`${id}番のデータは存在しません`);
       }
 
-      return res.json(result);
+      return res.status(HTTP_STATUS.OK).json(result);
     } catch (err) {
       if (err instanceof BadRequestError) {
         console.error("400 Bad Request : ", err.message);
