@@ -1,5 +1,5 @@
 import db from "../db";
-import * as mysql from "mysql2/";
+import * as mysql from "mysql2";
 
 export class Note {
   //プロパティ
