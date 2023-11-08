@@ -33,7 +33,7 @@ export class NoteController {
     const id = parseInt(idParam);
 
     //クエリパラメータが数値でない場合のエラーハンドリング
-    if (isNaN(id)) {
+    if (isNaN(id) || id <= 0) {
       return res.status(httpStatus_badRequest).json({
         error: "400 Bad Request",
         details: "idが不正な値です",
