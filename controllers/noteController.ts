@@ -17,7 +17,7 @@ export class NoteController {
       if (err instanceof Error) {
         console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
         return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-          error: "500 Internal Server Error",
+          error: HTTP_STATUS_MESSAGE[500],
           details: err.message,
         });
       }
