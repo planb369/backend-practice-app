@@ -52,6 +52,7 @@ export class NoteController {
         });
       }
       if (err instanceof NotFoundError) {
+        console.error("NotFoundError:", err.message);
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           error: "404 Not Found",
           details: err.message,
