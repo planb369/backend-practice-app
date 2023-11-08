@@ -25,7 +25,9 @@ export class NoteController {
   }
 
   //詳細情報の取得
-  async getNoteDetails(req: Request, res: Response, idParam: string) {
+  async getNoteDetails(req: Request, res: Response) {
+    //クエリパラメータから取得
+    const idParam = req.params.id;
     try {
       // idParamをIntに変換
       const id = parseInt(idParam);

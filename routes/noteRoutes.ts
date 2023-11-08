@@ -14,9 +14,7 @@ router.get("/api/notes", (req, res) => {
 
 //データの詳細取得
 router.get("/api/notes/:id", (req, res) => {
-  //クエリパラメータから取得
-  const id = req.params.id;
-  noteController.getNoteDetails(req, res, id);
+  noteController.getNoteDetails(req, res);
 });
 
 export default router;
