@@ -16,7 +16,6 @@ router.get("/api/notes", (req, res) => {
 router.get("/api/notes/:id", (req, res) => {
   //クエリパラメータから取得
   const id = req.params.id;
-  //noteControllerからgetNotesメソッドを実行
   noteController.getNoteDetails(req, res, id);
 });
 
