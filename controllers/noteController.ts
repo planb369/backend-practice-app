@@ -14,9 +14,9 @@ export class NoteController {
       return res.json(results);
     } catch (err) {
       if (err instanceof Error) {
-        console.error("データを取得できませんでした:", err.message);
+        console.error("500 Internal Server Error : ", err.message);
         return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-          error: "データを取得できませんでした",
+          error: "500 Internal Server Error",
           details: err.message,
         });
       }
