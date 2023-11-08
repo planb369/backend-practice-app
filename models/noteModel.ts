@@ -1,4 +1,5 @@
 import db from "../db";
+import * as mysql from "mysql2/";
 
 //データベースの一行分の定義
 type Row = {
@@ -17,32 +18,51 @@ export class Note {
   static search(): Promise<Note[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
-      db.query("SELECT * FROM notes", (error, results) => {
-        if (error) {
-          return reject(error); //returnで処理中断させる
+      db.query(
+        "SELECT * FROM notes",
+        (error, results: mysql.RowDataPacket[]) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+          //一行ずつインスタンスにマッピング
+          const notes: Note[] = results.map((row: mysql.RowDataPacket) => {
+            const note = new Note();
+            note.id = row.id;
+            note.title = row.title;
+            note.content = row.content;
+            return note;
+          });
+
+          return resolve(notes); //配列で返す
         }
-        //一行ずつインスタンスにマッピング
-        const notes: Note[] = results.map((row: Row) => {
-          const note = new Note();
-          note.id = row.id;
-          note.title = row.title;
-          note.content = row.content;
-          return note;
-        });
-        return resolve(notes); //配列で返す
-      });
+      );
     });
   }
 
   //詳細情報の取得
-  static find(id: number): Promise<Note> {
+  static find(id: number): Promise<Note | null> {
     return new Promise((resolve, reject) => {
-      db.query("SELECT*FROM notes where id=?", [id], (error, results) => {
-        if (error) {
-          return reject(error);
+      db.query(
+        "SELECT*FROM notes where id=?",
+        [id],
+        (error, results: mysql.RowDataPacket[]) => {
+          if (error) {
+            return reject(error);
+          }
+          if (results.length === 0) {
+            //該当データがないとき
+            return resolve(null);
+          }
+          const row = results[0];
+
+          const note = new Note();
+          note.id = row.id;
+          note.title = row.title;
+          note.content = row.content;
+
+          return resolve(note); // データを返す
         }
-        return resolve(results);
-      });
+      );
     });
   }
 }
