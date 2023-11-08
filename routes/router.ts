@@ -1,5 +1,5 @@
 import express from "express";
-import { NoteController } from "../controllers/noteController";
+import { NoteController } from "../controllers/NoteController";
 const router = express.Router();
 
 //NoteController のインスタンスを作成

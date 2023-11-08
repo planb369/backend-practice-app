@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { NoteModel } from "../models/noteModel";
+import { NoteModel } from "../models/NoteModel.js";
 import { NotFoundError } from "../errors/NotFoundError";
-import { HTTP_STATUS } from "../httpStatus/httpStatusCodes";
-import { HTTP_STATUS_MESSAGE } from "../httpStatus/httpStatusMessages";
+import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES.ts";
+import { HTTP_STATUS_MESSAGE } from "../httpStatus/HTTP_STATUS_MESSAGE";
 import { BadRequestError } from "../errors/BadRequestError";
 
 export class NoteController {
@@ -12,11 +12,11 @@ export class NoteController {
       // モデルからデータを取得
       const results = await NoteModel.search();
       // JSONでデータを返す
-      return res.status(HTTP_STATUS.OK).json(results);
+      return res.status(HTTP_STATUS_CODES.OK).json(results);
     } catch (err) {
       if (err instanceof Error) {
         console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
-        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        return res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
           error: HTTP_STATUS_MESSAGE[500],
           details: err.message,
         });
@@ -43,25 +43,25 @@ export class NoteController {
         throw new NotFoundError(`${id}番のデータは存在しません`);
       }
 
-      return res.status(HTTP_STATUS.OK).json(result);
+      return res.status(HTTP_STATUS_CODES.OK).json(result);
     } catch (err) {
       if (err instanceof BadRequestError) {
         console.error(`${HTTP_STATUS_MESSAGE[400]} : `, err.message);
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
           error: HTTP_STATUS_MESSAGE[400],
           details: err.message,
         });
       }
       if (err instanceof NotFoundError) {
         console.error(`${HTTP_STATUS_MESSAGE[404]} : `, err.message);
-        return res.status(HTTP_STATUS.NOT_FOUND).json({
+        return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({
           error: HTTP_STATUS_MESSAGE[404],
           details: err.message,
         });
       }
       if (err instanceof Error) {
         console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
-        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        return res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
           error: HTTP_STATUS_MESSAGE[500],
           details: err.message,
         });

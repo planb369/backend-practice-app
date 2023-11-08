@@ -48,12 +48,12 @@ export class NoteModel {
           }
 
           //データベースに対象データがあったとき
-          const row = results[0];
+          const ROW = results[0];
           //マッピングするためにNodeをインスタンス化
           const note = new NoteModel();
-          note.id = row.id;
-          note.title = row.title;
-          note.content = row.content;
+          note.id = ROW.id;
+          note.title = ROW.title;
+          note.content = ROW.content;
 
           return resolve(note);
         }
