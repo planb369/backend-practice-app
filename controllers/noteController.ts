@@ -45,21 +45,21 @@ export class NoteController {
       return res.json(result);
     } catch (err) {
       if (err instanceof BadRequestError) {
-        console.error("BadRequestError:", err.message);
+        console.error("400 Bad Request : ", err.message);
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
           error: "400 Bad Request",
           details: err.message,
         });
       }
       if (err instanceof NotFoundError) {
-        console.error("NotFoundError:", err.message);
+        console.error("404 NotFoundError : ", err.message);
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           error: "404 Not Found",
           details: err.message,
         });
       }
       if (err instanceof Error) {
-        console.error("データを取得できませんでした:", err.message);
+        console.error("500 Internal Server Error : ", err.message);
         return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
           error: "500 Internal Server Error",
           details: err.message,
