@@ -1,4 +1,4 @@
-import db from "../config/db";
+import DB from "../config/DB";
 import * as mysql from "mysql2";
 
 export class NoteModel {
@@ -11,7 +11,7 @@ export class NoteModel {
   static search(): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
-      db.query(
+      DB.query(
         "SELECT * FROM notes",
         (error, results: mysql.RowDataPacket[]) => {
           if (error) {
@@ -35,7 +35,7 @@ export class NoteModel {
   //詳細情報の取得
   static find(id: number): Promise<NoteModel | null> {
     return new Promise((resolve, reject) => {
-      db.query(
+      DB.query(
         "SELECT * FROM notes WHERE id = ?",
         [id],
         (error, results: mysql.RowDataPacket[]) => {
