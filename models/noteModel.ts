@@ -1,4 +1,4 @@
-import DB from "../config/DB";
+import DB from "../config/db";
 import * as mysql from "mysql2";
 
 export class NoteModel {
