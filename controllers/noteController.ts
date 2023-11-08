@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
 import { HTTP_STATUS } from "../constants/httpStatus";
+import { HTTP_STATUS_MESSAGE } from "../constants/httpStatusMessages";
 import { BadRequestError } from "../errors/BadRequestError";
 
 export class NoteController {
@@ -14,7 +15,7 @@ export class NoteController {
       return res.status(HTTP_STATUS.OK).json(results);
     } catch (err) {
       if (err instanceof Error) {
-        console.error("500 Internal Server Error : ", err.message);
+        console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
         return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
           error: "500 Internal Server Error",
           details: err.message,
@@ -45,23 +46,23 @@ export class NoteController {
       return res.status(HTTP_STATUS.OK).json(result);
     } catch (err) {
       if (err instanceof BadRequestError) {
-        console.error("400 Bad Request : ", err.message);
+        console.error(`${HTTP_STATUS_MESSAGE[400]} : `, err.message);
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
-          error: "400 Bad Request",
+          error: HTTP_STATUS_MESSAGE[400],
           details: err.message,
         });
       }
       if (err instanceof NotFoundError) {
-        console.error("404 NotFoundError : ", err.message);
+        console.error(`${HTTP_STATUS_MESSAGE[404]} : `, err.message);
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          error: "404 Not Found",
+          error: HTTP_STATUS_MESSAGE[404],
           details: err.message,
         });
       }
       if (err instanceof Error) {
-        console.error("500 Internal Server Error : ", err.message);
+        console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
         return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-          error: "500 Internal Server Error",
+          error: HTTP_STATUS_MESSAGE[500],
           details: err.message,
         });
       }
