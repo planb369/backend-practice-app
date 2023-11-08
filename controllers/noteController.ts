@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
-
-const httpStatus_badRequest = 400;
-const httpStatus_notFound = 404;
-const httpStatus_internalServerError = 500;
+import { HTTP_STATUS } from "../httpStatus";
 
 export class NoteController {
   // データ一覧の取得
@@ -17,7 +14,7 @@ export class NoteController {
     } catch (err) {
       if (err instanceof Error) {
         console.error("データを取得できませんでした:", err.message);
-        return res.status(httpStatus_internalServerError).json({
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
           error: "データを取得できませんでした",
           details: err.message,
         });
@@ -34,7 +31,7 @@ export class NoteController {
 
     //クエリパラメータが数値でない場合のエラーハンドリング
     if (isNaN(id) || id <= 0) {
-      return res.status(httpStatus_badRequest).json({
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
         error: "400 Bad Request",
         details: "idが不正な値です",
       });
@@ -51,14 +48,14 @@ export class NoteController {
       return res.json(result);
     } catch (err) {
       if (err instanceof NotFoundError) {
-        return res.status(httpStatus_notFound).json({
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
           error: "404 Not Found",
           details: err.message,
         });
       }
       if (err instanceof Error) {
         console.error("データを取得できませんでした:", err.message);
-        return res.status(httpStatus_internalServerError).json({
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
           error: "500 Internal Server Error",
           details: err.message,
         });
