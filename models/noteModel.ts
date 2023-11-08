@@ -36,7 +36,7 @@ export class Note {
   static find(id: number): Promise<Note | null> {
     return new Promise((resolve, reject) => {
       db.query(
-        "SELECT*FROM notes where id=?",
+        "SELECT * FROM notes WHERE id = ?",
         [id],
         (error, results: mysql.RowDataPacket[]) => {
           //該当データがデータベースにないとき
