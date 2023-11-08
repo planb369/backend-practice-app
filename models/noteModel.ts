@@ -1,13 +1,6 @@
 import db from "../db";
 import * as mysql from "mysql2/";
 
-//データベースの一行分の定義
-type Row = {
-  id: number;
-  title: string;
-  content: string;
-};
-
 export class Note {
   //プロパティ
   id?: number;
