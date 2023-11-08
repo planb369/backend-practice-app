@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
 import { HTTP_STATUS } from "../httpStatus";
+import { BadRequestError } from "../errors/BadRequestError";
 
 export class NoteController {
   // データ一覧の取得
@@ -29,15 +30,11 @@ export class NoteController {
     // idParamをIntに変換
     const id = parseInt(idParam);
 
-    //クエリパラメータが数値でない場合のエラーハンドリング
-    if (isNaN(id) || id <= 0) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        error: "400 Bad Request",
-        details: "idが不正な値です",
-      });
-    }
-
     try {
+      //クエリパラメータが数値でない場合のエラーハンドリング
+      if (isNaN(id) || id <= 0) {
+        throw new BadRequestError("URLが不正です");
+      }
       const result = await Note.find(id);
 
       if (!result) {
@@ -47,6 +44,13 @@ export class NoteController {
 
       return res.json(result);
     } catch (err) {
+      if (err instanceof BadRequestError) {
+        console.error("BadRequestError:", err.message);
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+          error: "400 Bad Request",
+          details: err.message,
+        });
+      }
       if (err instanceof NotFoundError) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           error: "404 Not Found",
