@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Note } from "../models/noteModel";
 import { NotFoundError } from "../errors/NotFoundError";
 
+const httpStatus_badRequest = 400;
 const httpStatus_notFound = 404;
 const httpStatus_internalServerError = 500;
 
@@ -28,10 +29,18 @@ export class NoteController {
   async getNoteDetails(req: Request, res: Response) {
     //クエリパラメータから取得
     const idParam = req.params.id;
-    try {
-      // idParamをIntに変換
-      const id = parseInt(idParam);
+    // idParamをIntに変換
+    const id = parseInt(idParam);
 
+    //クエリパラメータが数値でない場合のエラーハンドリング
+    if (isNaN(id)) {
+      return res.status(httpStatus_badRequest).json({
+        error: "400 Bad Request",
+        details: "idが不正な値です",
+      });
+    }
+
+    try {
       const result = await Note.find(id);
 
       if (!result) {
