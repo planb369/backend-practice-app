@@ -3,7 +3,7 @@ import * as mysql from "mysql2";
 
 export class NoteModel {
   //プロパティ
-  id?: number;
+  id?: string;
   title?: string;
   content?: string;
   createdAt?: string;
