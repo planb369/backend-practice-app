@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { HTTP_STATUS_MESSAGE } from "../httpStatus/HTTP_STATUS_MESSAGE";
 import { NotFoundError } from "../errors/NotFoundError";
