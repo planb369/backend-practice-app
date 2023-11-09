@@ -15,14 +15,26 @@ export class NoteController {
         throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
       }
 
+      //クエリパラメータから取得する
+      //limit取得件数 デフォルト50個
+      let limit = parseInt(req.query.limit as string) || 50;
+      //offset開始ページ デフォルト0
+      let offset = parseInt(req.query.offset as string) || 0;
+
       // モデルからデータを取得
       const results = await NoteModel.search();
 
-      //データを整形しJSONでデータで返す
+      //limitとoffsetでデータを絞り込み
+      const slicedResults = results.slice(offset, offset + limit);
+      console.log(limit + " ");
+      console.log(offset);
+
+      // レスポンスデータを整形
       const allNoteData = {
-        items: results,
-        total: results.length,
+        items: slicedResults,
+        total: slicedResults.length,
       };
+
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
     } catch (err) {
       if (err instanceof MethodNotAllowedError) {
@@ -32,7 +44,13 @@ export class NoteController {
           details: err.message,
         });
       }
-
+      if (err instanceof BadRequestError) {
+        console.error(`${HTTP_STATUS_MESSAGE[400]} : `, err.message);
+        return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+          error: HTTP_STATUS_MESSAGE[400],
+          details: err.message,
+        });
+      }
       if (err instanceof Error) {
         console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
         return res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
