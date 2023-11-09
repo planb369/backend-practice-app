@@ -10,7 +10,7 @@ export class NoteModel {
   updatedAt?: string;
 
   // データ一覧取得
-  static search(limit: number, offset: number): Promise<NoteModel[]> {
+  static search(limit: number = 50, offset: number = 0): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
       DB.query(
