@@ -4,7 +4,7 @@ import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { HTTP_STATUS_MESSAGE } from "../httpStatus/HTTP_STATUS_MESSAGE";
 import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
-import { MthodNotAllowedError } from "../errors/MethodNotAllowedError";
+import { MethodNotAllowedError } from "../errors/MethodNotAllowedError";
 
 export class NoteController {
   // データ一覧の取得
@@ -12,7 +12,7 @@ export class NoteController {
     try {
       //getメソッドでないなら405エラーをスロー
       if (req.method !== "GET") {
-        throw new MthodNotAllowedError("許可されていないHTTPメソッドです");
+        throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
       }
 
       // モデルからデータを取得
@@ -25,7 +25,7 @@ export class NoteController {
       };
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
     } catch (err) {
-      if (err instanceof MthodNotAllowedError) {
+      if (err instanceof MethodNotAllowedError) {
         console.error(`${HTTP_STATUS_MESSAGE[405]} : `, err.message);
         return res.status(HTTP_STATUS_CODES.METHOD_NOT_ALLOWED).json({
           error: HTTP_STATUS_MESSAGE[405],
@@ -57,7 +57,7 @@ export class NoteController {
       }
       //getメソッドでないなら405エラーをスロー
       if (req.method !== "GET") {
-        throw new MthodNotAllowedError("許可されていないHTTPメソッドです");
+        throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
       }
 
       const result = await NoteModel.find(id);
@@ -76,7 +76,7 @@ export class NoteController {
           details: err.message,
         });
       }
-      if (err instanceof MthodNotAllowedError) {
+      if (err instanceof MethodNotAllowedError) {
         console.error(`${HTTP_STATUS_MESSAGE[405]} : `, err.message);
         return res.status(HTTP_STATUS_CODES.METHOD_NOT_ALLOWED).json({
           error: HTTP_STATUS_MESSAGE[405],
