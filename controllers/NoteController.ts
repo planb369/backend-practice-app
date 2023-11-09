@@ -10,38 +10,28 @@ export class NoteController {
   // データ一覧の取得
   async getNotes(req: Request, res: Response) {
     try {
-      //getメソッドでないなら405エラーをスロー
       if (req.method !== "GET") {
         throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
       }
 
       //クエリパラメータから取得する
-      //limit取得件数 デフォルト50個
       let limit = parseInt(req.query.limit as string) || 50;
-      //offset開始ページ デフォルト0
       let offset = parseInt(req.query.offset as string) || 0;
 
-      //limitとoffsetの値でエラーハンドリング
       if (limit < 0 || offset < 0) {
         throw new BadRequestError("クエリパラメータの値が不正です");
       }
-      console.log(limit);
-      console.log(typeof limit);
 
       // モデルからデータを取得
       const results = await NoteModel.search();
 
       //limitとoffsetでデータを絞り込み
       const slicedResults = results.slice(offset, offset + limit);
-
       // レスポンスデータを整形
       const allNoteData = {
         items: slicedResults,
         total: slicedResults.length,
       };
-
-      console.log(limit);
-      console.log(offset);
 
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
     } catch (err) {
@@ -81,15 +71,14 @@ export class NoteController {
       if (isNaN(id) || id <= 0) {
         throw new BadRequestError("URLが不正です");
       }
-      //getメソッドでないなら405エラーをスロー
       if (req.method !== "GET") {
         throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
       }
 
       const result = await NoteModel.find(id);
 
+      //対象のデータがない場合NotFoundErrorをthrow
       if (!result) {
-        //対象のデータがない場合NotFoundErrorをthrow
         throw new NotFoundError(`${id}番のデータは存在しません`);
       }
 
