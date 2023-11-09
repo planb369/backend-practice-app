@@ -1,14 +1,20 @@
 import { Request, Response } from "express";
 import { NoteModel } from "../models/NoteModel";
-import { NotFoundError } from "../errors/NotFoundError";
 import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { HTTP_STATUS_MESSAGE } from "../httpStatus/HTTP_STATUS_MESSAGE";
+import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
+import { MthodNotAllowedError } from "../errors/MethodNotAllowedError";
 
 export class NoteController {
   // データ一覧の取得
   async getNotes(req: Request, res: Response) {
     try {
+      //getメソッドでないなら405エラーをスロー
+      if (req.method !== "GET") {
+        throw new MthodNotAllowedError("許可されていないHTTPメソッドです");
+      }
+
       // モデルからデータを取得
       const results = await NoteModel.search();
 
@@ -19,6 +25,14 @@ export class NoteController {
       };
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
     } catch (err) {
+      if (err instanceof MthodNotAllowedError) {
+        console.error(`${HTTP_STATUS_MESSAGE[405]} : `, err.message);
+        return res.status(HTTP_STATUS_CODES.METHOD_NOT_ALLOWED).json({
+          error: HTTP_STATUS_MESSAGE[405],
+          details: err.message,
+        });
+      }
+
       if (err instanceof Error) {
         console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
         return res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
@@ -41,6 +55,11 @@ export class NoteController {
       if (isNaN(id) || id <= 0) {
         throw new BadRequestError("URLが不正です");
       }
+      //getメソッドでないなら405エラーをスロー
+      if (req.method !== "GET") {
+        throw new MthodNotAllowedError("許可されていないHTTPメソッドです");
+      }
+
       const result = await NoteModel.find(id);
 
       if (!result) {
@@ -54,6 +73,13 @@ export class NoteController {
         console.error(`${HTTP_STATUS_MESSAGE[400]} : `, err.message);
         return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
           error: HTTP_STATUS_MESSAGE[400],
+          details: err.message,
+        });
+      }
+      if (err instanceof MthodNotAllowedError) {
+        console.error(`${HTTP_STATUS_MESSAGE[405]} : `, err.message);
+        return res.status(HTTP_STATUS_CODES.METHOD_NOT_ALLOWED).json({
+          error: HTTP_STATUS_MESSAGE[405],
           details: err.message,
         });
       }

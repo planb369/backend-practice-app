@@ -1,7 +1,7 @@
-export class MthodNotAllowed extends Error {
+export class MthodNotAllowedError extends Error {
   constructor(message: string) {
     //親クラスErrorのメソッドを呼び出し
     super(message);
-    this.name = "MthodNotAllowed";
+    this.name = "MthodNotAllowedError";
   }
 }
