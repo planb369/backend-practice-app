@@ -21,19 +21,27 @@ export class NoteController {
       //offset開始ページ デフォルト0
       let offset = parseInt(req.query.offset as string) || 0;
 
+      //limitとoffsetの値でエラーハンドリング
+      if (limit < 0 || offset < 0) {
+        throw new BadRequestError("クエリパラメータの値が不正です");
+      }
+      console.log(limit);
+      console.log(typeof limit);
+
       // モデルからデータを取得
       const results = await NoteModel.search();
 
       //limitとoffsetでデータを絞り込み
       const slicedResults = results.slice(offset, offset + limit);
-      console.log(limit + " ");
-      console.log(offset);
 
       // レスポンスデータを整形
       const allNoteData = {
         items: slicedResults,
         total: slicedResults.length,
       };
+
+      console.log(limit);
+      console.log(offset);
 
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
     } catch (err) {
