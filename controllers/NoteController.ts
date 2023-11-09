@@ -21,6 +21,7 @@ export class NoteController {
       if (limit < 0 || offset < 0) {
         throw new BadRequestError("クエリパラメータの値が不正です");
       }
+      if (limit > 50) limit = 50;
 
       // モデルからデータを取得
       const results = await NoteModel.search();
