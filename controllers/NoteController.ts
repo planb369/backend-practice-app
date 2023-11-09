@@ -23,15 +23,13 @@ export class NoteController {
       }
       if (limit > 50) limit = 50;
 
-      // モデルからデータを取得
-      const results = await NoteModel.search();
+      // モデルにlimit offsetを渡しデータを取得
+      const results = await NoteModel.search(limit, offset);
 
-      //limitとoffsetでデータを絞り込み
-      const slicedResults = results.slice(offset, offset + limit);
       // レスポンスデータを整形
       const allNoteData = {
-        items: slicedResults,
-        total: slicedResults.length,
+        items: results,
+        total: results.length,
       };
 
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);

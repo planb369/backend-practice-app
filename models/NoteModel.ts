@@ -10,11 +10,12 @@ export class NoteModel {
   updatedAt?: string;
 
   // データ一覧取得
-  static search(): Promise<NoteModel[]> {
+  static search(limit: number, offset: number): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
       DB.query(
-        "SELECT * FROM notes",
+        "SELECT * FROM notes LIMIT ? OFFSET ?",
+        [limit, offset],
         (error, results: mysql.RowDataPacket[]) => {
           if (error) {
             return reject(error); //returnで処理中断させる
