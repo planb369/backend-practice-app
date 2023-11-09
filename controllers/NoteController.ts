@@ -3,17 +3,12 @@ import { NoteModel } from "../models/NoteModel";
 import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
-import { MethodNotAllowedError } from "../errors/MethodNotAllowedError";
 import { handleErrors } from "../errors/handleErrors";
 
 export class NoteController {
   // データ一覧の取得
   async getNotes(req: Request, res: Response) {
     try {
-      if (req.method !== "GET") {
-        throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
-      }
-
       //クエリパラメータから取得する
       let limit = parseInt(req.query.limit as string) || 50;
       let offset = parseInt(req.query.offset as string) || 0;
@@ -53,9 +48,6 @@ export class NoteController {
       //クエリパラメータが数値でない場合のエラーハンドリング
       if (isNaN(id) || id <= 0) {
         throw new BadRequestError("URLが不正です");
-      }
-      if (req.method !== "GET") {
-        throw new MethodNotAllowedError("許可されていないHTTPメソッドです");
       }
 
       const result = await NoteModel.find(id);
