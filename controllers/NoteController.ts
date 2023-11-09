@@ -31,7 +31,7 @@ export class NoteController {
       // レスポンスデータを整形
       const allNoteData = {
         items: slicedResults,
-        total: slicedResults.length,
+        total: results.length,
       };
 
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
