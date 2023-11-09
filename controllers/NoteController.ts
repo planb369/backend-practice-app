@@ -11,8 +11,13 @@ export class NoteController {
     try {
       // モデルからデータを取得
       const results = await NoteModel.search();
-      // JSONでデータを返す
-      return res.status(HTTP_STATUS_CODES.OK).json(results);
+
+      //データを整形しJSONでデータで返す
+      const allNoteData = {
+        items: results,
+        total: results.length,
+      };
+      return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
     } catch (err) {
       if (err instanceof Error) {
         console.error(`${HTTP_STATUS_MESSAGE[500]} : `, err.message);
