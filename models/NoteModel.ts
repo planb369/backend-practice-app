@@ -6,6 +6,8 @@ export class NoteModel {
   id?: number;
   title?: string;
   content?: string;
+  createdAt?: string;
+  updatedAt?: string;
 
   // データ一覧取得
   static search(): Promise<NoteModel[]> {
@@ -23,6 +25,8 @@ export class NoteModel {
             note.id = row.id;
             note.title = row.title;
             note.content = row.content;
+            note.createdAt = row.createdAt;
+            note.updatedAt = row.updatedAt;
             return note;
           });
 
@@ -48,12 +52,14 @@ export class NoteModel {
           }
 
           //データベースに対象データがあったとき
-          const ROW = results[0];
+          const row = results[0];
           //マッピングするためにNodeをインスタンス化
           const note = new NoteModel();
-          note.id = ROW.id;
-          note.title = ROW.title;
-          note.content = ROW.content;
+          note.id = row.id;
+          note.title = row.title;
+          note.content = row.content;
+          note.createdAt = row.createdAt;
+          note.updatedAt = row.updatedAt;
 
           return resolve(note);
         }
