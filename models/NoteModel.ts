@@ -86,9 +86,14 @@ export class NoteModel {
   // データ送信
   static postNote(title: string, content: string): Promise<string> {
     return new Promise((resolve, reject) => {
+      //マッピング
+      const note = new NoteModel();
+      note.title = title;
+      note.content = content;
+
       DB.query(
         "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (UPPER(SUBSTRING(REPLACE(UUID(), '-', ''), 1, 32)), ?, ?, NOW(), NOW())",
-        [title, content],
+        [note.title, note.content],
         (error, results: mysql.RowDataPacket[]) => {
           if (error) {
             return reject(error); //returnで処理中断させる
