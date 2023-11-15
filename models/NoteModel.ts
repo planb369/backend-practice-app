@@ -91,9 +91,9 @@ export class NoteModel {
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
       console.log(uuid);
       //現在時刻生成
-      const date = new Date().toISOString();
+      const isoTimestamp = new Date().toISOString();
       //mysqlの形式にする
-      const mysqlTimestamp = date.replace("T", " ").slice(0, 19);
+      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
 
       //マッピング
       const note = new NoteModel();
