@@ -9,11 +9,15 @@ export class NoteController {
   // データ一覧の取得
   async getNotes(req: Request, res: Response) {
     try {
-      //クエリパラメータから取得する
-      let limit = parseInt(req.query.limit as string) || 50;
-      let offset = parseInt(req.query.offset as string) || 0;
+      // クエリパラメータから取得する
+      const limitStr = req.query.limit as string;
+      const offsetStr = req.query.offset as string;
 
-      if (limit < 0 || offset < 0) {
+      // 数値にする
+      let limit = limitStr ? parseInt(limitStr) : 50;
+      const offset = offsetStr ? parseInt(offsetStr) : 0;
+
+      if (isNaN(limit) || isNaN(offset) || limit < 0 || offset < 0) {
         throw new BadRequestError("クエリパラメータの値が不正です");
       }
       if (limit > 50) limit = 50;
