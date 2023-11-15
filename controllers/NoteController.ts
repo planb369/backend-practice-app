@@ -73,13 +73,15 @@ export class NoteController {
   //データ投稿
   async postNote(req: Request, res: Response) {
     try {
-      if (!(req.body && req.body.title && req.body.content)) {
-        throw new MethodNotAllowedError("titleとcontentは必須です");
-      }
       const title = req.body.title;
       const content = req.body.content;
 
-      console.log(req.body);
+      console.log(req.body.title);
+      console.log(req.body.content);
+
+      if (!title || !content) {
+        throw new MethodNotAllowedError("titleとcontentは必須です");
+      }
 
       const result = await NoteModel.postNote(title, content);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
