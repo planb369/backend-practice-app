@@ -4,7 +4,6 @@ import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { handleErrors } from "../errors/handleErrors";
-import { MethodNotAllowedError } from "../errors/MethodNotAllowed";
 
 export class NoteController {
   // データ一覧の取得
