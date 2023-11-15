@@ -16,4 +16,8 @@ router.get("/api/notes/:id", (req, res) => {
   noteController.getNoteDetails(req, res);
 });
 
+router.post("api/notes", (req, res) => {
+  noteController.postNote(req, res);
+});
+
 export default router;
