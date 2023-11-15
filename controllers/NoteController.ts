@@ -4,6 +4,7 @@ import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { handleErrors } from "../errors/handleErrors";
+import { MethodNotAllowedError } from "../errors/MethodNotAllowed";
 
 export class NoteController {
   // データ一覧の取得
@@ -72,9 +73,15 @@ export class NoteController {
   //データ投稿
   async postNote(req: Request, res: Response) {
     try {
-      console.log(req.body.title);
-      console.log(req.body.content);
-      const result = await NoteModel.postNote(req.body.title, req.body.content);
+      if (!(req.body && req.body.title && req.body.content)) {
+        throw new MethodNotAllowedError("titleとcontentは必須です");
+      }
+      const title = req.body.title;
+      const content = req.body.content;
+
+      console.log(req.body);
+
+      const result = await NoteModel.postNote(title, content);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
