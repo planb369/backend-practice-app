@@ -1,8 +1,9 @@
 import { Response } from "express";
 import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { HTTP_STATUS_MESSAGE } from "../httpStatus/HTTP_STATUS_MESSAGE";
-import { NotFoundError } from "../errors/NotFoundError";
-import { BadRequestError } from "../errors/BadRequestError";
+import { NotFoundError } from "./NotFoundError";
+import { BadRequestError } from "./BadRequestError";
+import { MethodNotAllowedError } from "./MethodNotAllowed";
 
 export function handleErrors(err: Error, res: Response) {
   if (err instanceof BadRequestError) {
@@ -16,6 +17,13 @@ export function handleErrors(err: Error, res: Response) {
     console.error(`${HTTP_STATUS_MESSAGE[404]} : `, err.message);
     return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({
       error: HTTP_STATUS_MESSAGE[404],
+      details: err.message,
+    });
+  }
+  if (err instanceof MethodNotAllowedError) {
+    console.error(`${HTTP_STATUS_MESSAGE[405]} : `, err.message);
+    return res.status(HTTP_STATUS_CODES.METHOD_NOT_ALLOWED).json({
+      error: HTTP_STATUS_MESSAGE[405],
       details: err.message,
     });
   }

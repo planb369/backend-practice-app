@@ -1,5 +1,6 @@
 import DB from "../config/DB";
 import * as mysql from "mysql2";
+import { v4 as uuidv4 } from "uuid";
 
 export class NoteModel {
   //プロパティ
@@ -78,6 +79,47 @@ export class NoteModel {
           note.updatedAt = row.updatedAt;
 
           return resolve(note);
+        }
+      );
+    });
+  }
+
+  // データ送信
+  static postNote(title: string, content: string): Promise<NoteModel> {
+    return new Promise((resolve, reject) => {
+      //UUIDを生成
+      const uuid = uuidv4().replace(/-/g, "").toUpperCase();
+      console.log(uuid);
+      //現在時刻生成
+      const isoTimestamp = new Date().toISOString();
+      //mysqlの形式にする
+      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
+
+      //マッピング
+      const note = new NoteModel();
+      note.id = uuid;
+      note.title = title;
+      note.content = content;
+      note.createdAt = mysqlTimestamp;
+      note.updatedAt = mysqlTimestamp;
+
+      DB.query(
+        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)",
+        [note.id, note.title, note.content, note.createdAt, note.updatedAt],
+        (error) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+
+          //整形
+          const response = {
+            id: note.id,
+            title: note.title,
+            content: note.content,
+            createdAt: note.createdAt,
+            updatedAt: note.updatedAt,
+          };
+          return resolve(response);
         }
       );
     });
