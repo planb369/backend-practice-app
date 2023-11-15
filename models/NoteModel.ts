@@ -37,6 +37,21 @@ export class NoteModel {
     });
   }
 
+  // データの個数を数える
+  static getTotalNotes(): Promise<NoteModel[]> {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        "SELECT COUNT(id) FROM notes",
+        (error, results: mysql.RowDataPacket[]) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+          return resolve(results[0]["COUNT(id)"]);
+        }
+      );
+    });
+  }
+
   //詳細情報の取得
   static find(id: number): Promise<NoteModel | null> {
     return new Promise((resolve, reject) => {

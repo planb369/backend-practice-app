@@ -20,11 +20,13 @@ export class NoteController {
 
       // モデルからデータを取得
       const results = await NoteModel.search(limit, offset);
+      //totalを取得
+      const total = await NoteModel.getTotalNotes();
 
       // レスポンスデータを整形
       const allNoteData = {
         items: results,
-        total: results.length,
+        total: total,
       };
 
       return res.status(HTTP_STATUS_CODES.OK).json(allNoteData);
