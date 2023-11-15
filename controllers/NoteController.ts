@@ -79,6 +79,9 @@ export class NoteController {
       console.log(req.body.title);
       console.log(req.body.content);
 
+      if (!req.is("json")) {
+        throw new BadRequestError("json形式ではありません");
+      }
       if (!title || !content) {
         throw new MethodNotAllowedError("titleとcontentは必須です");
       }
