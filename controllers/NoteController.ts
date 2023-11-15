@@ -77,15 +77,17 @@ export class NoteController {
         throw new BadRequestError("json形式ではありません");
       }
 
-      if (req.body.title.length > 120 || req.body.title.length > 100000) {
+      if (req.body.title.length > 120 || req.body.content.length > 100000) {
         throw new BadRequestError(
           "titleは120文字以内,contentは100000文字以内で入力してください"
         );
       }
+
+      //エスケープ処理
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      if (!escapedTitle || !escapedTitle) {
+      if (!escapedTitle || !escapedContent) {
         throw new BadRequestError("titleとcontentは必須です");
       }
 
