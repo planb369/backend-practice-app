@@ -75,11 +75,19 @@ export class NoteController {
       if (!req.is("json")) {
         throw new BadRequestError("json形式ではありません");
       }
-      if (!req.body.title || !req.body.content) {
+      const title = req.body.title;
+      const content = req.body.content;
+
+      if (!title || !content) {
         throw new BadRequestError("titleとcontentは必須です");
       }
+      if (title.length > 120 || content.length > 100000) {
+        throw new BadRequestError(
+          "titleは120文字以内,contentは100000文字以内で入力してください"
+        );
+      }
 
-      const result = await NoteModel.postNote(req.body.title, req.body.content);
+      const result = await NoteModel.postNote(title, content);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
