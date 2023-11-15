@@ -98,7 +98,12 @@ export class NoteModel {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
-          return resolve("データ挿入できた");
+          return resolve(
+            "データ投稿できました title : " +
+              note.title +
+              ", content : " +
+              note.content
+          );
         }
       );
     });
