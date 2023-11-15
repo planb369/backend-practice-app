@@ -4,6 +4,7 @@ import { HTTP_STATUS_CODES } from "../httpStatus/HTTP_STATUS_CODES";
 import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { handleErrors } from "../errors/handleErrors";
+import { htmlEscape } from "../utilities/htmlEscape";
 
 export class NoteController {
   // データ一覧の取得
@@ -75,19 +76,20 @@ export class NoteController {
       if (!req.is("json")) {
         throw new BadRequestError("json形式ではありません");
       }
-      const title = req.body.title;
-      const content = req.body.content;
 
-      if (!title || !content) {
+      const escapedTitle = htmlEscape(req.body.title);
+      const escapedContent = htmlEscape(req.body.content);
+
+      if (!escapedTitle || !escapedTitle) {
         throw new BadRequestError("titleとcontentは必須です");
       }
-      if (title.length > 120 || content.length > 100000) {
+      if (escapedTitle.length > 120 || escapedContent.length > 100000) {
         throw new BadRequestError(
           "titleは120文字以内,contentは100000文字以内で入力してください"
         );
       }
 
-      const result = await NoteModel.postNote(title, content);
+      const result = await NoteModel.postNote(escapedTitle, escapedContent);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
