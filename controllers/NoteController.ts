@@ -77,7 +77,7 @@ export class NoteController {
         throw new BadRequestError("json形式ではありません");
       }
       if (!req.body.title || !req.body.content) {
-        throw new MethodNotAllowedError("titleとcontentは必須です");
+        throw new BadRequestError("titleとcontentは必須です");
       }
 
       const result = await NoteModel.postNote(req.body.title, req.body.content);
