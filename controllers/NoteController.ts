@@ -72,6 +72,8 @@ export class NoteController {
   //データ投稿
   async postNote(req: Request, res: Response) {
     try {
+      console.log(req.body.title);
+      console.log(req.body.content);
       const result = await NoteModel.postNote(req.body.title, req.body.content);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
