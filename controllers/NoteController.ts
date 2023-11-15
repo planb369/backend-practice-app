@@ -73,7 +73,7 @@ export class NoteController {
   async postNote(req: Request, res: Response) {
     try {
       const result = await NoteModel.postNote(req.body.title, req.body.content);
-      return res.status(HTTP_STATUS_CODES.OK).json(result);
+      return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
