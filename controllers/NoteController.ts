@@ -73,20 +73,14 @@ export class NoteController {
   //データ投稿
   async postNote(req: Request, res: Response) {
     try {
-      const title = req.body.title;
-      const content = req.body.content;
-
-      console.log(req.body.title);
-      console.log(req.body.content);
-
       if (!req.is("json")) {
         throw new BadRequestError("json形式ではありません");
       }
-      if (!title || !content) {
+      if (!req.body.title || !req.body.content) {
         throw new MethodNotAllowedError("titleとcontentは必須です");
       }
 
-      const result = await NoteModel.postNote(title, content);
+      const result = await NoteModel.postNote(req.body.title, req.body.content);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
