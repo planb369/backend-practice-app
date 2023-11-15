@@ -41,12 +41,12 @@ export class NoteModel {
   static getTotalCount(): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       DB.query(
-        "SELECT COUNT(id) FROM notes",
+        "SELECT COUNT(id) as count FROM notes",
         (error, results: mysql.RowDataPacket[]) => {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
-          return resolve(results[0]["COUNT(id)"]);
+          return resolve(results[0]["count"]);
         }
       );
     });
