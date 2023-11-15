@@ -21,7 +21,7 @@ export class NoteController {
       // モデルからデータを取得
       const results = await NoteModel.search(limit, offset);
       //totalを取得
-      const total = await NoteModel.getTotalNotes();
+      const total = await NoteModel.getTotalCount();
 
       // レスポンスデータを整形
       const allNoteData = {

@@ -38,7 +38,7 @@ export class NoteModel {
   }
 
   // データの個数を数える
-  static getTotalNotes(): Promise<NoteModel[]> {
+  static getTotalCount(): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       DB.query(
         "SELECT COUNT(id) FROM notes",
