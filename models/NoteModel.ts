@@ -1,6 +1,6 @@
 import DB from "../config/DB";
 import * as mysql from "mysql2";
-import { v1 as uuidv1 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export class NoteModel {
   //プロパティ
@@ -88,7 +88,8 @@ export class NoteModel {
   static postNote(title: string, content: string): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
       //UUIDを生成
-      const uuid = uuidv1().replace(/-/g, "").toUpperCase();
+      const uuid = uuidv4().replace(/-/g, "").toUpperCase();
+      console.log(uuid);
       //現在時刻生成
       const date = new Date().toISOString();
       //mysqlの形式にする
