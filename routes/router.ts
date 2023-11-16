@@ -23,7 +23,6 @@ router.post("/api/notes", (req, res) => {
 
 //編集
 router.put("/api/notes/:id", (req, res) => {
-  console.log("Jjj");
   noteController.putNote(req, res);
 });
 

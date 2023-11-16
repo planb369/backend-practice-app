@@ -102,7 +102,6 @@ export class NoteController {
   async putNote(req: Request, res: Response) {
     //クエリパラメータから取得
     const id = req.params.id;
-    console.log("hh");
 
     try {
       //idのバリデーション
