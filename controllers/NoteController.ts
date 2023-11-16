@@ -87,8 +87,13 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
+      //NoteModelオブジェクトの作成
+      const note = new NoteModel();
+      note.title = escapedTitle;
+      note.content = escapedContent;
+
       //投稿処理
-      const postResult = await NoteModel.postNote(escapedTitle, escapedContent);
+      const postResult = await NoteModel.postNote(note);
 
       //データを見つけて返却する
       if (postResult.id) {

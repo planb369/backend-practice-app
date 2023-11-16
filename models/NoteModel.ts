@@ -88,14 +88,14 @@ export class NoteModel {
   }
 
   // データ送信
-  static postNote(title: string, content: string): Promise<NoteModel> {
+  static postNote(note: NoteModel): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
       //UUID生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
 
       DB.query(
         "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
-        [uuid, title, content],
+        [uuid, note.title, note.content],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
