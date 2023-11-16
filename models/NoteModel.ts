@@ -93,21 +93,15 @@ export class NoteModel {
       //UUID生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
 
-      //マッピング
-      const note = new NoteModel();
-      note.id = uuid;
-      note.title = title;
-      note.content = content;
-
       DB.query(
         "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
-        [note.id, note.title, note.content],
+        [uuid, title, content],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
           return resolve({
-            id: note.id,
+            id: uuid,
           });
         }
       );
@@ -121,21 +115,15 @@ export class NoteModel {
     content: string
   ): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
-      //マッピング
-      const note = new NoteModel();
-      note.id = id;
-      note.title = title;
-      note.content = content;
-
       DB.query(
         "UPDATE notes SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
-        [note.title, note.content, note.id],
+        [title, content, id],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
           return resolve({
-            id: note.id,
+            id: id,
           });
         }
       );
