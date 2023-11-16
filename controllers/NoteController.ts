@@ -26,7 +26,7 @@ export class NoteController {
       if (limit > 50) limit = 50;
 
       // モデルからデータを取得
-      const results = await NoteModel.search(limit, offset);
+      const results = await NoteModel.searchNotes(limit, offset);
       //totalを取得
       const total = await NoteModel.getTotalCount();
 
@@ -54,7 +54,7 @@ export class NoteController {
         throw new BadRequestError("idの値が不正です");
       }
 
-      const result = await NoteModel.find(id);
+      const result = await NoteModel.findNote(id);
       if (!result) {
         throw new NotFoundError(`idが${id}のデータは存在しません`);
       }
@@ -87,7 +87,7 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      const result = await NoteModel.post(escapedTitle, escapedContent);
+      const result = await NoteModel.postNote(escapedTitle, escapedContent);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
@@ -97,7 +97,7 @@ export class NoteController {
   }
 
   //編集
-  async putNote(req: Request, res: Response) {
+  async updateNote(req: Request, res: Response) {
     //クエリパラメータから取得
     const id = req.params.id;
 
@@ -111,7 +111,7 @@ export class NoteController {
         throw new BadRequestError("idの値が不正です");
       }
 
-      const isExists = await NoteModel.find(id);
+      const isExists = await NoteModel.findNote(id);
       if (!isExists) {
         throw new BadRequestError("存在しないidです");
       }
@@ -129,7 +129,11 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      const result = await NoteModel.update(id, escapedTitle, escapedContent);
+      const result = await NoteModel.updateNote(
+        id,
+        escapedTitle,
+        escapedContent
+      );
       return res.status(HTTP_STATUS_CODES.OK).json(result);
     } catch (err) {
       if (err instanceof Error) {

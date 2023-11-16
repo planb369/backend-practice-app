@@ -23,7 +23,7 @@ router.post("/api/notes", (req, res) => {
 
 //編集
 router.put("/api/notes/:id", (req, res) => {
-  noteController.putNote(req, res);
+  noteController.updateNote(req, res);
 });
 
 export default router;

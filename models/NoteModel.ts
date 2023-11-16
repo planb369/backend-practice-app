@@ -11,7 +11,10 @@ export class NoteModel {
   updatedAt?: string;
 
   // データ一覧取得
-  static search(limit: number = 50, offset: number = 0): Promise<NoteModel[]> {
+  static searchNotes(
+    limit: number = 50,
+    offset: number = 0
+  ): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
       DB.query(
@@ -54,7 +57,7 @@ export class NoteModel {
   }
 
   //詳細情報の取得
-  static find(id: string): Promise<NoteModel | null> {
+  static findNote(id: string): Promise<NoteModel | null> {
     return new Promise((resolve, reject) => {
       DB.query(
         "SELECT * FROM notes WHERE id = ?",
@@ -85,7 +88,7 @@ export class NoteModel {
   }
 
   // データ送信
-  static post(title: string, content: string): Promise<NoteModel> {
+  static postNote(title: string, content: string): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
       //UUID生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
@@ -125,7 +128,7 @@ export class NoteModel {
   }
 
   //編集
-  static update(
+  static updateNote(
     id: string,
     title: string,
     content: string
