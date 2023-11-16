@@ -5,6 +5,7 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { handleErrors } from "../errors/handleErrors";
 import { htmlEscape } from "../utilities/htmlEscape";
+import { validateId } from "../utilities/validationId";
 
 export class NoteController {
   // データ一覧の取得
@@ -48,14 +49,11 @@ export class NoteController {
     const id = req.params.id;
 
     try {
-      const idRegex = /^[A-Z0-9]{32}$/;
-      if (!idRegex.test(id)) {
+      if (!validateId(id)) {
         throw new BadRequestError("idの値が不正です");
       }
 
       const result = await NoteModel.find(id);
-
-      //対象のデータがない場合NotFoundErrorをthrow
       if (!result) {
         throw new NotFoundError(`idが${id}のデータは存在しません`);
       }
@@ -104,15 +102,14 @@ export class NoteController {
     const id = req.params.id;
 
     try {
+      //idのバリデーション
+      if (!validateId(id)) {
+        throw new BadRequestError("idの値が不正です");
+      }
+
       const isExists = await NoteModel.checkNoteExists(id);
       if (isExists === 0) {
         throw new BadRequestError("存在しないidです");
-      }
-
-      //idのバリデーション
-      const idRegex = /^[A-Z0-9]{32}$/;
-      if (!idRegex.test(id)) {
-        throw new BadRequestError("idの値が不正です");
       }
 
       //titleとcontentのバリデーション
