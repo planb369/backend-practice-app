@@ -1,6 +1,7 @@
 import DB from "../config/DB";
 import * as mysql from "mysql2";
 import { v4 as uuidv4 } from "uuid";
+import { generateMysqlCurrentTime } from "../utilities/generateMysqlCurrentTime";
 
 export class NoteModel {
   //プロパティ
@@ -87,13 +88,9 @@ export class NoteModel {
   // データ送信
   static postNote(title: string, content: string): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
-      //UUIDを生成
+      //UUIDと現在の時間生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
-      console.log(uuid);
-      //現在時刻生成
-      const isoTimestamp = new Date().toISOString();
-      //mysqlの形式にする
-      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
+      const mysqlTimestamp = generateMysqlCurrentTime();
 
       //マッピング
       const note = new NoteModel();
@@ -148,10 +145,7 @@ export class NoteModel {
     content: string
   ): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
-      //現在時刻生成
-      const isoTimestamp = new Date().toISOString();
-      //mysqlの形式にする
-      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
+      const mysqlTimestamp = generateMysqlCurrentTime();
 
       //マッピング
       const note = new NoteModel();
