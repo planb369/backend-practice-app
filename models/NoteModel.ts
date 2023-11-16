@@ -123,7 +123,7 @@ export class NoteModel {
   }
 
   //存在チェック
-  static checkNoteExists(id: string): Promise<number> {
+  static checkNoteExists(id: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       DB.query(
         "SELECT COUNT(*) AS count FROM notes WHERE id = ? LIMIT 1",
@@ -132,7 +132,11 @@ export class NoteModel {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
-          return resolve(results[0]["count"]);
+          if (results[0]["count"] === 0) {
+            return resolve(false);
+          } else {
+            return resolve(true);
+          }
         }
       );
     });

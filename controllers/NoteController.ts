@@ -112,7 +112,7 @@ export class NoteController {
       }
 
       const isExists = await NoteModel.checkNoteExists(id);
-      if (isExists === 0) {
+      if (isExists === false) {
         throw new BadRequestError("存在しないidです");
       }
 
