@@ -87,7 +87,7 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      const result = await NoteModel.postNote(escapedTitle, escapedContent);
+      const result = await NoteModel.post(escapedTitle, escapedContent);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
     } catch (err) {
       if (err instanceof Error) {
@@ -129,7 +129,7 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      const result = await NoteModel.putNote(id, escapedTitle, escapedContent);
+      const result = await NoteModel.update(id, escapedTitle, escapedContent);
       return res.status(HTTP_STATUS_CODES.OK).json(result);
     } catch (err) {
       if (err instanceof Error) {

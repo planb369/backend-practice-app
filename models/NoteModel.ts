@@ -85,7 +85,7 @@ export class NoteModel {
   }
 
   // データ送信
-  static postNote(title: string, content: string): Promise<NoteModel> {
+  static post(title: string, content: string): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
       //UUID生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
@@ -125,7 +125,7 @@ export class NoteModel {
   }
 
   //編集
-  static putNote(
+  static update(
     id: string,
     title: string,
     content: string
