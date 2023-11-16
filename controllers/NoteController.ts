@@ -87,8 +87,18 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      const result = await NoteModel.postNote(escapedTitle, escapedContent);
-      return res.status(HTTP_STATUS_CODES.CREATED).json(result);
+      //投稿処理
+      const postResult = await NoteModel.postNote(escapedTitle, escapedContent);
+
+      //データを見つけて返却する
+      if (postResult.id) {
+        const responseData = await NoteModel.findNote(postResult.id);
+        return res.status(HTTP_STATUS_CODES.CREATED).json(responseData);
+      } else {
+        throw new NotFoundError(
+          "データが追加できませんでした。idが見つかりません"
+        );
+      }
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
