@@ -54,7 +54,7 @@ export class NoteModel {
   }
 
   //詳細情報の取得
-  static find(id: number): Promise<NoteModel | null> {
+  static find(id: string): Promise<NoteModel | null> {
     return new Promise((resolve, reject) => {
       DB.query(
         "SELECT * FROM notes WHERE id = ?",

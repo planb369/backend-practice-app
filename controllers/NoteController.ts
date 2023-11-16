@@ -45,21 +45,19 @@ export class NoteController {
   //詳細情報の取得
   async getNoteDetails(req: Request, res: Response) {
     //クエリパラメータから取得
-    const idParam = req.params.id;
-    // idParamをIntに変換
-    const id = parseInt(idParam);
+    const id = req.params.id;
 
     try {
-      //クエリパラメータが数値でない場合のエラーハンドリング
-      if (isNaN(id) || id <= 0) {
-        throw new BadRequestError("URLが不正です");
+      const idRegex = /^[A-Z0-9]{32}$/;
+      if (!idRegex.test(id)) {
+        throw new BadRequestError("idの値が不正です");
       }
 
       const result = await NoteModel.find(id);
 
       //対象のデータがない場合NotFoundErrorをthrow
       if (!result) {
-        throw new NotFoundError(`${id}番のデータは存在しません`);
+        throw new NotFoundError(`idが${id}のデータは存在しません`);
       }
 
       return res.status(HTTP_STATUS_CODES.OK).json(result);
