@@ -5,8 +5,8 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { handleErrors } from "../errors/handleErrors";
 import { htmlEscape } from "../utilities/htmlEscape";
-import { validationId } from "../utilities/validationId";
-import { validationInputDatas } from "../utilities/validationInputDatas";
+import { validationId } from "../utilities/validation/validationId";
+import { validationInputDatas } from "../utilities/validation/validationInputDatas";
 
 export class NoteController {
   // データ一覧の取得
