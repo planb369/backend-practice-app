@@ -171,10 +171,6 @@ export class NoteModel {
           //整形
           const response = {
             id: note.id,
-            title: note.title,
-            content: note.content,
-            createdAt: note.createdAt,
-            updatedAt: note.updatedAt,
           };
           return resolve(response);
         }
