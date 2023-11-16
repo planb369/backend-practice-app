@@ -161,12 +161,9 @@ export class NoteModel {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
-
-          //整形
-          const response = {
+          return resolve({
             id: note.id,
-          };
-          return resolve(response);
+          });
         }
       );
     });
