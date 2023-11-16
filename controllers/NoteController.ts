@@ -104,6 +104,11 @@ export class NoteController {
     const id = req.params.id;
 
     try {
+      const isExists = await NoteModel.checkNoteExists(id);
+      if (isExists == 0) {
+        throw new BadRequestError("存在しないidです");
+      }
+
       //idのバリデーション
       const idRegex = /^[A-Z0-9]{32}$/;
       if (!idRegex.test(id)) {

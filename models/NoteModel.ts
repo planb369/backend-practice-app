@@ -125,6 +125,22 @@ export class NoteModel {
     });
   }
 
+  //存在チェック
+  static checkNoteExists(id: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        "SELECT COUNT(*) AS count FROM notes WHERE id = ? LIMIT 1",
+        [id],
+        (error, results: mysql.RowDataPacket[]) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+          return resolve(results[0]["count"]);
+        }
+      );
+    });
+  }
+
   //編集
   static putNote(
     id: string,
