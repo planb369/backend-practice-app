@@ -93,7 +93,7 @@ export class NoteController {
       note.content = escapedContent;
 
       //投稿処理
-      const postResult = await NoteModel.postNote(note);
+      const postResult = await NoteModel.createNote(note);
 
       //データを見つけて返却する
       if (postResult.id) {
