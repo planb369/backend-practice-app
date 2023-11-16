@@ -135,7 +135,7 @@ export class NoteController {
       }
 
       const result = await NoteModel.putNote(id, escapedTitle, escapedContent);
-      return res.status(HTTP_STATUS_CODES.CREATED).json(result);
+      return res.status(HTTP_STATUS_CODES.OK).json(result);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
