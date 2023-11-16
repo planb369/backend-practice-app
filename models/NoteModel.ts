@@ -145,18 +145,15 @@ export class NoteModel {
     content: string
   ): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
-      const mysqlTimestamp = generateMysqlCurrentTime();
-
       //マッピング
       const note = new NoteModel();
       note.id = id;
       note.title = title;
       note.content = content;
-      note.updatedAt = mysqlTimestamp;
 
       DB.query(
-        "UPDATE notes SET title = ?, content = ?, updatedAt = ? WHERE id = ?",
-        [note.title, note.content, note.updatedAt, note.id],
+        "UPDATE notes SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
+        [note.title, note.content, note.id],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
