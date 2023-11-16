@@ -109,21 +109,17 @@ export class NoteModel {
   }
 
   //編集
-  static updateNote(
-    id: string,
-    title: string,
-    content: string
-  ): Promise<NoteModel> {
+  static updateNote(note: NoteModel): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
       DB.query(
         "UPDATE notes SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
-        [title, content, id],
+        [note.title, note.content, note.id],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
           return resolve({
-            id: id,
+            id: note.id,
           });
         }
       );

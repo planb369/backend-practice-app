@@ -139,11 +139,14 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      const result = await NoteModel.updateNote(
-        id,
-        escapedTitle,
-        escapedContent
-      );
+      //NoteModelオブジェクトの作成
+      const note = new NoteModel();
+      note.id = id;
+      note.title = escapedTitle;
+      note.content = escapedContent;
+
+      //更新
+      const result = await NoteModel.updateNote(note);
       return res.status(HTTP_STATUS_CODES.OK).json(result);
     } catch (err) {
       if (err instanceof Error) {
