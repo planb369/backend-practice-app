@@ -75,7 +75,13 @@ export class NoteController {
       }
 
       //titleとcontentのバリデーション
-      validationInputDatas(req.body.title, req.body.content);
+      const validationError = validationInputDatas(
+        req.body.title,
+        req.body.content
+      );
+      if (validationError) {
+        throw new BadRequestError(validationError);
+      }
 
       //エスケープ処理
       const escapedTitle = htmlEscape(req.body.title);
@@ -96,6 +102,10 @@ export class NoteController {
     const id = req.params.id;
 
     try {
+      if (!req.is("json")) {
+        throw new BadRequestError("json形式ではありません");
+      }
+
       //idのバリデーション
       if (!validationId(id)) {
         throw new BadRequestError("idの値が不正です");
@@ -107,11 +117,12 @@ export class NoteController {
       }
 
       //titleとcontentのバリデーション
-      validationInputDatas(req.body.title, req.body.content);
-
-      //titleとcontentのバリデーション
-      if (!req.is("json")) {
-        throw new BadRequestError("json形式ではありません");
+      const validationError = validationInputDatas(
+        req.body.title,
+        req.body.content
+      );
+      if (validationError) {
+        throw new BadRequestError(validationError);
       }
 
       //エスケープ処理

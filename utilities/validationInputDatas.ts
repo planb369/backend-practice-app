@@ -1,13 +1,14 @@
-import { BadRequestError } from "../errors/BadRequestError";
-
-export function validationInputDatas(title: string, content: string): void {
+export function validationInputDatas(
+  title: string,
+  content: string
+): string | null {
   if (!title || !content) {
-    throw new BadRequestError("titleとcontentは必須です");
+    return "titleとcontentは必須です";
   }
 
   if (title.length > 120 || content.length > 100000) {
-    throw new BadRequestError(
-      "titleは120文字以内,contentは100000文字以内で入力してください"
-    );
+    return "titleは120文字以内,contentは100000文字以内で入力してください";
   }
+  //バリデーションに引っ掛からなかったら
+  return null;
 }
