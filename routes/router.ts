@@ -21,4 +21,10 @@ router.post("/api/notes", (req, res) => {
   noteController.postNote(req, res);
 });
 
+//編集
+router.put("/api/notes/:id", (req, res) => {
+  console.log("Jjj");
+  noteController.putNote(req, res);
+});
+
 export default router;

@@ -124,4 +124,45 @@ export class NoteModel {
       );
     });
   }
+
+  //編集
+  static putNote(
+    id: string,
+    title: string,
+    content: string
+  ): Promise<NoteModel> {
+    return new Promise((resolve, reject) => {
+      //現在時刻生成
+      const isoTimestamp = new Date().toISOString();
+      //mysqlの形式にする
+      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
+
+      //マッピング
+      const note = new NoteModel();
+      note.id = id;
+      note.title = title;
+      note.content = content;
+      note.updatedAt = mysqlTimestamp;
+
+      DB.query(
+        "UPDATE notes SET title = ?, content = ?, updatedAt = ? WHERE id = ?",
+        [note.title, note.content, note.updatedAt, note.id],
+        (error) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+
+          //整形
+          const response = {
+            id: note.id,
+            title: note.title,
+            content: note.content,
+            createdAt: note.createdAt,
+            updatedAt: note.updatedAt,
+          };
+          return resolve(response);
+        }
+      );
+    });
+  }
 }

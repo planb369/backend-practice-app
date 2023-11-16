@@ -97,4 +97,45 @@ export class NoteController {
       }
     }
   }
+
+  //編集
+  async putNote(req: Request, res: Response) {
+    //クエリパラメータから取得
+    const id = req.params.id;
+    console.log("hh");
+
+    try {
+      //idのバリデーション
+      const idRegex = /^[A-Z0-9]{32}$/;
+      if (!idRegex.test(id)) {
+        throw new BadRequestError("idの値が不正です");
+      }
+
+      //titleとcontentのバリデーション
+      if (!req.is("json")) {
+        throw new BadRequestError("json形式ではありません");
+      }
+
+      if (req.body.title.length > 120 || req.body.content.length > 100000) {
+        throw new BadRequestError(
+          "titleは120文字以内,contentは100000文字以内で入力してください"
+        );
+      }
+
+      //エスケープ処理
+      const escapedTitle = htmlEscape(req.body.title);
+      const escapedContent = htmlEscape(req.body.content);
+
+      if (!escapedTitle || !escapedContent) {
+        throw new BadRequestError("titleとcontentは必須です");
+      }
+
+      const result = await NoteModel.putNote(id, escapedTitle, escapedContent);
+      return res.status(HTTP_STATUS_CODES.CREATED).json(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
+      }
+    }
+  }
 }
