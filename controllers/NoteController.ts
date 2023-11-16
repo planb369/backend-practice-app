@@ -5,7 +5,8 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { BadRequestError } from "../errors/BadRequestError";
 import { handleErrors } from "../errors/handleErrors";
 import { htmlEscape } from "../utilities/htmlEscape";
-import { validateId } from "../utilities/validationId";
+import { validationId } from "../utilities/validationId";
+import { validationInputDatas } from "../utilities/validationInputDatas";
 
 export class NoteController {
   // データ一覧の取得
@@ -49,7 +50,7 @@ export class NoteController {
     const id = req.params.id;
 
     try {
-      if (!validateId(id)) {
+      if (!validationId(id)) {
         throw new BadRequestError("idの値が不正です");
       }
 
@@ -73,19 +74,12 @@ export class NoteController {
         throw new BadRequestError("json形式ではありません");
       }
 
-      if (req.body.title.length > 120 || req.body.content.length > 100000) {
-        throw new BadRequestError(
-          "titleは120文字以内,contentは100000文字以内で入力してください"
-        );
-      }
+      //titleとcontentのバリデーション
+      validationInputDatas(req.body.title, req.body.content);
 
       //エスケープ処理
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
-
-      if (!escapedTitle || !escapedContent) {
-        throw new BadRequestError("titleとcontentは必須です");
-      }
 
       const result = await NoteModel.postNote(escapedTitle, escapedContent);
       return res.status(HTTP_STATUS_CODES.CREATED).json(result);
@@ -103,7 +97,7 @@ export class NoteController {
 
     try {
       //idのバリデーション
-      if (!validateId(id)) {
+      if (!validationId(id)) {
         throw new BadRequestError("idの値が不正です");
       }
 
@@ -113,23 +107,16 @@ export class NoteController {
       }
 
       //titleとcontentのバリデーション
+      validationInputDatas(req.body.title, req.body.content);
+
+      //titleとcontentのバリデーション
       if (!req.is("json")) {
         throw new BadRequestError("json形式ではありません");
-      }
-
-      if (req.body.title.length > 120 || req.body.content.length > 100000) {
-        throw new BadRequestError(
-          "titleは120文字以内,contentは100000文字以内で入力してください"
-        );
       }
 
       //エスケープ処理
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
-
-      if (!escapedTitle || !escapedContent) {
-        throw new BadRequestError("titleとcontentは必須です");
-      }
 
       const result = await NoteModel.putNote(id, escapedTitle, escapedContent);
       return res.status(HTTP_STATUS_CODES.OK).json(result);
