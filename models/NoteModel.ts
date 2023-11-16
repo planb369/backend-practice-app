@@ -92,36 +92,23 @@ export class NoteModel {
     return new Promise((resolve, reject) => {
       //UUID生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
-      //現在時刻生成
-      const isoTimestamp = new Date().toISOString();
-      //mysqlの形式にする
-      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
 
       //マッピング
       const note = new NoteModel();
       note.id = uuid;
       note.title = title;
       note.content = content;
-      note.createdAt = mysqlTimestamp;
-      note.updatedAt = mysqlTimestamp;
 
       DB.query(
-        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)",
-        [note.id, note.title, note.content, note.createdAt, note.updatedAt],
+        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+        [note.id, note.title, note.content],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
-
-          //整形
-          const response = {
+          return resolve({
             id: note.id,
-            title: note.title,
-            content: note.content,
-            createdAt: note.createdAt,
-            updatedAt: note.updatedAt,
-          };
-          return resolve(response);
+          });
         }
       );
     });
