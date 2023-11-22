@@ -26,4 +26,9 @@ router.put("/api/notes/:id", (req, res) => {
   noteController.updateNote(req, res);
 });
 
+//削除
+router.delete("/api/notes/:id", (req, res) => {
+  noteController.deleteNote(req, res);
+});
+
 export default router;

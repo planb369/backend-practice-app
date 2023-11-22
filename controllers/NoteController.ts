@@ -155,4 +155,19 @@ export class NoteController {
       }
     }
   }
+
+  //削除
+  async deleteNote(req: Request, res: Response) {
+    const id = req.params.id;
+
+    try {
+      //削除
+      const result = await NoteModel.deleteNote(id);
+      return res.status(HTTP_STATUS_CODES.OK).json(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
+      }
+    }
+  }
 }
