@@ -1,4 +1,3 @@
-import { rejects } from "assert";
 import DB from "../config/DB";
 import * as mysql from "mysql2";
 import { v4 as uuidv4 } from "uuid";
