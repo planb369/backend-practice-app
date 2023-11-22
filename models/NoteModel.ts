@@ -125,4 +125,16 @@ export class NoteModel {
       );
     });
   }
+
+  //削除
+  static deleteNote(id: string): Promise<NoteModel> {
+    return new Promise((resolve, reject) => {
+      DB.query("DELETE FROM notes WHERE id = ?", [id], (error) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve({ id: id });
+      });
+    });
+  }
 }
