@@ -100,9 +100,7 @@ export class NoteController {
         const responseData = await NoteModel.findNote(postResult.id);
         return res.status(HTTP_STATUS_CODES.CREATED).json(responseData);
       } else {
-        throw new NotFoundError(
-          "データが追加できませんでした。idが見つかりません"
-        );
+        throw new Error("データが追加できませんでした");
       }
     } catch (err) {
       if (err instanceof Error) {
