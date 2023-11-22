@@ -124,8 +124,8 @@ export class NoteController {
         throw new BadRequestError("idの値が不正です");
       }
 
-      const foundNote = await NoteModel.findNote(id);
-      if (foundNote === null) {
+      const note = await NoteModel.findNote(id);
+      if (note === null) {
         throw new BadRequestError("存在しないidです");
       }
 
@@ -142,9 +142,7 @@ export class NoteController {
       const escapedTitle = htmlEscape(req.body.title);
       const escapedContent = htmlEscape(req.body.content);
 
-      //NoteModelオブジェクトの作成
-      const note = new NoteModel();
-      note.id = id;
+      //NoteModelオブジェクトのプロパティを変える
       note.title = escapedTitle;
       note.content = escapedContent;
 
