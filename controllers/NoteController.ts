@@ -126,8 +126,8 @@ export class NoteController {
         throw new BadRequestError("idの値が不正です");
       }
 
-      const isExists = await NoteModel.findNote(id);
-      if (!isExists) {
+      const findNote = await NoteModel.findNote(id);
+      if (findNote === null) {
         throw new BadRequestError("存在しないidです");
       }
 
