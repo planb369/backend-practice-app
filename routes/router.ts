@@ -18,7 +18,7 @@ router.get("/api/notes/:id", (req, res) => {
 
 //データ投稿
 router.post("/api/notes", (req, res) => {
-  noteController.postNote(req, res);
+  noteController.createNote(req, res);
 });
 
 //編集

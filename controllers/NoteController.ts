@@ -68,7 +68,7 @@ export class NoteController {
   }
 
   //データ投稿
-  async postNote(req: Request, res: Response) {
+  async createNote(req: Request, res: Response) {
     try {
       if (!req.is("json")) {
         throw new BadRequestError("json形式ではありません");
