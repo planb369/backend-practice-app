@@ -125,7 +125,7 @@ export class NoteController {
       }
 
       const note = await NoteModel.findNote(id);
-      if (note === null) {
+      if (!note) {
         throw new BadRequestError("存在しないidです");
       }
 
