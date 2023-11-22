@@ -11,7 +11,10 @@ export class NoteModel {
   updatedAt?: string;
 
   // データ一覧取得
-  static search(limit: number = 50, offset: number = 0): Promise<NoteModel[]> {
+  static searchNotes(
+    limit: number = 50,
+    offset: number = 0
+  ): Promise<NoteModel[]> {
     return new Promise((resolve, reject) => {
       //return reject(new Error("test")); //テスト用
       DB.query(
@@ -54,7 +57,7 @@ export class NoteModel {
   }
 
   //詳細情報の取得
-  static find(id: number): Promise<NoteModel | null> {
+  static findNote(id: string): Promise<NoteModel | null> {
     return new Promise((resolve, reject) => {
       DB.query(
         "SELECT * FROM notes WHERE id = ?",
@@ -85,41 +88,39 @@ export class NoteModel {
   }
 
   // データ送信
-  static postNote(title: string, content: string): Promise<NoteModel> {
+  static saveNote(note: NoteModel): Promise<NoteModel> {
     return new Promise((resolve, reject) => {
-      //UUIDを生成
+      //UUID生成
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
-      console.log(uuid);
-      //現在時刻生成
-      const isoTimestamp = new Date().toISOString();
-      //mysqlの形式にする
-      const mysqlTimestamp = isoTimestamp.replace("T", " ").slice(0, 19);
-
-      //マッピング
-      const note = new NoteModel();
-      note.id = uuid;
-      note.title = title;
-      note.content = content;
-      note.createdAt = mysqlTimestamp;
-      note.updatedAt = mysqlTimestamp;
 
       DB.query(
-        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)",
-        [note.id, note.title, note.content, note.createdAt, note.updatedAt],
+        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+        [uuid, note.title, note.content],
         (error) => {
           if (error) {
             return reject(error); //returnで処理中断させる
           }
+          return resolve({
+            id: uuid,
+          });
+        }
+      );
+    });
+  }
 
-          //整形
-          const response = {
+  //編集
+  static updateNote(note: NoteModel): Promise<NoteModel> {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        "UPDATE notes SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
+        [note.title, note.content, note.id],
+        (error) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+          return resolve({
             id: note.id,
-            title: note.title,
-            content: note.content,
-            createdAt: note.createdAt,
-            updatedAt: note.updatedAt,
-          };
-          return resolve(response);
+          });
         }
       );
     });
