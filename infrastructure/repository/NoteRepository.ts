@@ -118,4 +118,16 @@ export class NoteRepository {
       );
     });
   }
+
+  //削除
+  static deleteNote(id: string): Promise<Note> {
+    return new Promise((resolve, reject) => {
+      DB.query("DELETE FROM notes WHERE id = ?", [id], (error) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve({ id: id });
+      });
+    });
+  }
 }

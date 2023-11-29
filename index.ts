@@ -21,6 +21,7 @@ app.get("/api/notes/:id", (req, res) =>
 );
 app.post("/api/notes", (req, res) => noteController.createNote(req, res));
 app.put("/api/notes/:id", (req, res) => noteController.updateNote(req, res));
+app.delete("/api/notes/:id", (req, res) => noteController.deleteNote(req, res));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

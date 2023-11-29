@@ -7,6 +7,8 @@ import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
 import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
 import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
 import { UpdateNoteRequest } from "../transfer/request/UpdateNoteRequest";
+import { DeleteNoteRequest } from "../transfer/request/DeleteNoteRequest";
+import { DeleteNoteUseCase } from "../../application/usecase/DeleteNoteUseCase";
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 import { htmlEscape } from "../../utilities/htmlEscape";
@@ -15,6 +17,7 @@ export class NoteController {
   searchNotesUseCase = new SearchNotesUseCase();
   findNoteUseCase = new FindNoteUseCase();
   createNoteUseCase = new CreateNoteUseCase();
+  deleteNoteUseCase = new DeleteNoteUseCase();
 
   async getNotes(req: Request, res: Response) {
     try {
@@ -101,6 +104,19 @@ export class NoteController {
       );
 
       res.status(HTTP_STATUS_CODES.CREATED).json(output);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
+      }
+    }
+  }
+
+  async deleteNote(req: Request, res: Response) {
+    try {
+      //ユースケースに渡す
+      const output = await this.deleteNoteUseCase.deleteNote(req.params.id);
+
+      res.status(HTTP_STATUS_CODES.OK).json(output);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
