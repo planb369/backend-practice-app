@@ -7,6 +7,7 @@ import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
 import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
 import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
 import { UpdateNoteRequest } from "../transfer/request/UpdateNoteRequest";
+import { UpdateNoteUseCase } from "../../application/usecase/UpdateNoteUseCase";
 import { DeleteNoteRequest } from "../transfer/request/DeleteNoteRequest";
 import { DeleteNoteUseCase } from "../../application/usecase/DeleteNoteUseCase";
 import { handleErrors } from "./errors/handleErrors";
@@ -17,6 +18,7 @@ export class NoteController {
   searchNotesUseCase = new SearchNotesUseCase();
   findNoteUseCase = new FindNoteUseCase();
   createNoteUseCase = new CreateNoteUseCase();
+  updateNoteUseCase = new UpdateNoteUseCase();
   deleteNoteUseCase = new DeleteNoteUseCase();
 
   async getNotes(req: Request, res: Response) {
@@ -98,7 +100,8 @@ export class NoteController {
       const escapedContent = htmlEscape(req.body.content);
 
       //ユースケースに渡す
-      const output = await this.createNoteUseCase.createNote(
+      const output = await this.updateNoteUseCase.updateNote(
+        req.params.id,
         escapedTitle,
         escapedContent
       );
