@@ -23,9 +23,6 @@ export class NoteController {
         request.offset
       );
 
-      //total取得
-      const total = await this.getNotesUseCase;
-
       //responseで整形して返却
       const response = new GetNotesResponse(output.notes, output.total);
       res.status(HTTP_STATUS_CODES.OK).json(response.convertToJson());
