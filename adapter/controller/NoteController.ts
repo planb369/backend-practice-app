@@ -75,7 +75,7 @@ export class NoteController {
         escapedContent
       );
 
-      res.status(HTTP_STATUS_CODES.OK).json(output);
+      res.status(HTTP_STATUS_CODES.CREATED).json(output);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
