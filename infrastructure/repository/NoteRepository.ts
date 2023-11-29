@@ -100,4 +100,22 @@ export class NoteRepository {
       );
     });
   }
+
+  //編集
+  static updateNote(note: Note): Promise<Note> {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        "UPDATE notes SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
+        [note.title, note.content, note.id],
+        (error) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+          return resolve({
+            id: note.id,
+          });
+        }
+      );
+    });
+  }
 }
