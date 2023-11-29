@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { NoteController } from "./adapter/controller/NotesController";
-import { GetNotesUseCase } from "./application/usecase/GetNotesUseCase";
+import { NoteController } from "./adapter/controller/NoteController";
 
 dotenv.config();
 
@@ -15,11 +14,7 @@ app.use(
   })
 );
 
-//依存性を注入してNoteControllerのインスタンスを作成
 const noteController = new NoteController();
-
-//app.use("/", routes);
-
 app.get("/api/notes", (req, res) => noteController.getNotes(req, res));
 
 app.listen(port, () => {
