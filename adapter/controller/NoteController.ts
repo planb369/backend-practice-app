@@ -4,12 +4,16 @@ import { SearchNotesRequest } from "../transfer/request/SearchNotesRequest";
 import { SearchNotesResponse } from "../transfer/response/SearchNotesResponse";
 import { FindNoteRequest } from "../transfer/request/FindNoteRequest";
 import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
+import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
+import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
+import { htmlEscape } from "../transfer/validation/htmlEscape";
 
 export class NoteController {
   searchNotesUseCase = new SearchNotesUseCase();
   findNoteUseCase = new FindNoteUseCase();
+  createNoteUseCase = new CreateNoteUseCase();
 
   async getNotes(req: Request, res: Response) {
     try {
@@ -48,6 +52,30 @@ export class NoteController {
       const output = await this.findNoteUseCase.findNote(request.id);
 
       res.status(HTTP_STATUS_CODES.OK).json(output.note);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
+      }
+    }
+  }
+
+  async createNote(req: Request, res: Response) {
+    try {
+      //requestで中身のバリデーション
+      const request = new CreateNoteRequest(req);
+      await request.validate();
+
+      //エスケープ処理
+      const escapedTitle = htmlEscape(req.body.title);
+      const escapedContent = htmlEscape(req.body.content);
+
+      //ユースケースに渡す
+      const output = await this.createNoteUseCase.createNote(
+        req.body.title,
+        req.body.content
+      );
+
+      res.status(HTTP_STATUS_CODES.OK).json(output);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);

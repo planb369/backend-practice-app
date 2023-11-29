@@ -2,6 +2,7 @@ import { Note } from "../../domain/entity/Note";
 import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
 import * as mysql from "mysql2";
+import { v4 as uuidv4 } from "uuid";
 
 export class NoteRepository {
   //一覧取得
@@ -76,6 +77,25 @@ export class NoteRepository {
           );
 
           return resolve(note);
+        }
+      );
+    });
+  }
+
+  // データ送信
+  static saveNote(note: Note): Promise<string> {
+    return new Promise((resolve, reject) => {
+      //UUID生成
+      const uuid = uuidv4().replace(/-/g, "").toUpperCase();
+
+      DB.query(
+        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+        [uuid, note.title, note.content],
+        (error) => {
+          if (error) {
+            return reject(error); //returnで処理中断させる
+          }
+          return resolve(uuid);
         }
       );
     });
