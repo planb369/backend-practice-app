@@ -1,6 +1,6 @@
 import { Note } from "../../../domain/entity/Note";
 
-export class GetNotesResponse {
+export class SearchNotesResponse {
   constructor(public notes: Note[], public total: number) {}
   convertToJson() {
     return {

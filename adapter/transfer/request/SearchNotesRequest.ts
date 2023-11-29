@@ -1,6 +1,6 @@
 import { BadRequestError } from "../../controller/errors/BadRequestError";
 
-export class GetNotesRequest {
+export class SearchNotesRequest {
   //受け取るデータをクラスのプロパティとして初期化
   constructor(public limit: number, public offset: number) {}
 
