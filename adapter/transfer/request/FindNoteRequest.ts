@@ -4,14 +4,16 @@ import { NotFoundError } from "../../controller/errors/NotFoundError";
 import { validationId } from "../validation/validationId";
 
 export class FindNoteRequest {
-  //受け取るデータをクラスのプロパティとして初期化
   constructor(public id: string) {}
 
-  validate(): string | null {
+  async validate(): Promise<null> {
     if (!validationId(this.id)) {
       throw new BadRequestError("idの値が不正です");
     }
-    const result = NoteRepository.findNote(this.id);
+
+    // 非同期処理のため await を使用
+    const result = await NoteRepository.findNote(this.id);
+
     if (!result) {
       throw new NotFoundError(`idが${this.id}のデータは存在しません`);
     }

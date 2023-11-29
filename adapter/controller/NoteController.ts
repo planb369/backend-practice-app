@@ -38,16 +38,16 @@ export class NoteController {
 
   async getNoteDetails(req: Request, res: Response) {
     const id = req.params.id;
-    console.log(id);
 
     try {
+      //requestでidのバリデーション
       const request = new FindNoteRequest(id);
-      request.validate();
+      await request.validate();
 
       //ユースケースに渡す
       const output = await this.findNoteUseCase.findNote(request.id);
 
-      res.status(HTTP_STATUS_CODES.OK).json(output);
+      res.status(HTTP_STATUS_CODES.OK).json(output.note);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
