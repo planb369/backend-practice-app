@@ -85,10 +85,9 @@ export class NoteController {
   }
 
   async updateNote(req: Request, res: Response) {
-    const id = req.params.id;
     try {
       //requestで中身のバリデーション
-      const request = new CreateNoteRequest(req);
+      const request = new UpdateNoteRequest(req);
       await request.validate();
 
       //エスケープ処理
