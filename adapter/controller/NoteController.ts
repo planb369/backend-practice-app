@@ -113,6 +113,10 @@ export class NoteController {
 
   async deleteNote(req: Request, res: Response) {
     try {
+      //requestで中身のバリデーション
+      const request = new DeleteNoteRequest(req.params.id);
+      await request.validate();
+
       //ユースケースに渡す
       const output = await this.deleteNoteUseCase.deleteNote(req.params.id);
 
