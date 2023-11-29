@@ -15,11 +15,13 @@ import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 import { htmlEscape } from "../../utilities/htmlEscape";
 
 export class NoteController {
-  searchNotesUseCase = new SearchNotesUseCase();
-  findNoteUseCase = new FindNoteUseCase();
-  createNoteUseCase = new CreateNoteUseCase();
-  updateNoteUseCase = new UpdateNoteUseCase();
-  deleteNoteUseCase = new DeleteNoteUseCase();
+  constructor(
+    private searchNotesUseCase: SearchNotesUseCase,
+    private createNoteUseCase: CreateNoteUseCase,
+    private findNoteUseCase: FindNoteUseCase,
+    private updateNoteUseCase: UpdateNoteUseCase,
+    private deleteNoteUseCase: DeleteNoteUseCase
+  ) {}
 
   async getNotes(req: Request, res: Response) {
     try {
