@@ -3,6 +3,7 @@ import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
 
 export class NoteRepository {
+  //一覧取得
   static async searchNotes(
     limit: number = 50,
     offset: number = 0
@@ -15,7 +16,7 @@ export class NoteRepository {
           if (error) {
             return reject(error);
           }
-          //const rows = results as RowDataPacket[];
+          //Noteをインスタンス化してマッピング
           const notes = results.map(
             (row) =>
               new Note(
@@ -26,7 +27,7 @@ export class NoteRepository {
                 row.updatedAt
               )
           );
-          resolve(notes);
+          resolve(notes); //配列で返す
         }
       );
     });

@@ -1,6 +1,7 @@
 import { BadRequestError } from "../../../errors/BadRequestError";
 
 export class GetNotesRequest {
+  //受け取るデータをクラスのプロパティとして初期化
   constructor(public limit: number, public offset: number) {}
 
   validate(): string | null {

@@ -4,8 +4,6 @@ import { GetNotesRequest } from "../transfer/request/GetNotesRequest";
 import { GetNotesResponse } from "../transfer/response/GetNotesResponse";
 
 export class NoteController {
-  //constructor(private getNotesUseCase: GetNotesUseCase) {}
-
   getNotesUseCase = new GetNotesUseCase();
 
   async getNotes(req: Request, res: Response) {
