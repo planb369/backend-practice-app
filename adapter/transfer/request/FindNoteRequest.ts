@@ -11,7 +11,6 @@ export class FindNoteRequest {
       throw new BadRequestError("idの値が不正です");
     }
 
-    // 非同期処理のため await を使用
     const result = await NoteRepository.findNote(this.id);
 
     if (!result) {
