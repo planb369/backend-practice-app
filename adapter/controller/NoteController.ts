@@ -8,7 +8,7 @@ import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
 import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
-import { htmlEscape } from "../transfer/validation/htmlEscape";
+import { htmlEscape } from "../../utilities/htmlEscape";
 
 export class NoteController {
   searchNotesUseCase = new SearchNotesUseCase();
@@ -71,8 +71,8 @@ export class NoteController {
 
       //ユースケースに渡す
       const output = await this.createNoteUseCase.createNote(
-        req.body.title,
-        req.body.content
+        escapedTitle,
+        escapedContent
       );
 
       res.status(HTTP_STATUS_CODES.OK).json(output);
