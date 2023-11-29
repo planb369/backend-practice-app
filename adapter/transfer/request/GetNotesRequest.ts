@@ -1,4 +1,4 @@
-import { BadRequestError } from "../../../errors/BadRequestError";
+import { BadRequestError } from "../../controller/errors/BadRequestError";
 
 export class GetNotesRequest {
   //受け取るデータをクラスのプロパティとして初期化
