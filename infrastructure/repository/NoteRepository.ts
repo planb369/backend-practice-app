@@ -48,4 +48,36 @@ export class NoteRepository {
       );
     });
   }
+
+  //詳細情報の取得
+  static findNote(id: string): Promise<Note | null> {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        "SELECT * FROM notes WHERE id = ?",
+        [id],
+        (error, results: mysql.RowDataPacket[]) => {
+          //該当データがデータベースにないとき
+          if (results.length === 0) {
+            return resolve(null);
+          }
+          if (error) {
+            return reject(error);
+          }
+
+          //データベースに対象データがあったとき
+          const row = results[0];
+          //マッピングするためにNodeをインスタンス化
+          const note = new Note(
+            row.id,
+            row.title,
+            row.content,
+            row.createdAt,
+            row.updatedAt
+          );
+
+          return resolve(note);
+        }
+      );
+    });
+  }
 }

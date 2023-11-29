@@ -16,6 +16,9 @@ app.use(
 
 const noteController = new NoteController();
 app.get("/api/notes", (req, res) => noteController.getNotes(req, res));
+app.get("/api/notes/:id", (req, res) =>
+  noteController.getNoteDetails(req, res)
+);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

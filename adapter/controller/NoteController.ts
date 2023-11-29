@@ -1,12 +1,15 @@
 import { Request, Response } from "express";
-import { GetNotesUseCase } from "../../application/usecase/GetNotesUseCase";
+import { SearchNotesUseCase } from "../../application/usecase/SearchNotesUseCase";
 import { SearchNotesRequest } from "../transfer/request/SearchNotesRequest";
 import { SearchNotesResponse } from "../transfer/response/SearchNotesResponse";
+import { FindNoteRequest } from "../transfer/request/FindNoteRequest";
+import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 
 export class NoteController {
-  getNotesUseCase = new GetNotesUseCase();
+  searchNotesUseCase = new SearchNotesUseCase();
+  findNoteUseCase = new FindNoteUseCase();
 
   async getNotes(req: Request, res: Response) {
     try {
@@ -18,7 +21,7 @@ export class NoteController {
       request.validate();
 
       //ユースケースに渡す
-      const output = await this.getNotesUseCase.getNotes(
+      const output = await this.searchNotesUseCase.getNotes(
         request.limit,
         request.offset
       );
@@ -26,6 +29,25 @@ export class NoteController {
       //responseで整形して返却
       const response = new SearchNotesResponse(output.notes, output.total);
       res.status(HTTP_STATUS_CODES.OK).json(response.convertToJson());
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
+      }
+    }
+  }
+
+  async getNoteDetails(req: Request, res: Response) {
+    const id = req.params.id;
+    console.log(id);
+
+    try {
+      const request = new FindNoteRequest(id);
+      request.validate();
+
+      //ユースケースに渡す
+      const output = await this.findNoteUseCase.findNote(request.id);
+
+      res.status(HTTP_STATUS_CODES.OK).json(output);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
