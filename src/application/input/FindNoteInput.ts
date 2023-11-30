@@ -1,6 +1,7 @@
-import { NoteId } from "../../domain/object/NoteId";
 import { Note } from "../../domain/entity/Note";
+import { NoteId } from "../../domain/object/NoteId";
 
+//useCaseで受け付けるものを定義するため
 export class FindNoteInput {
   constructor(private readonly noteId: NoteId) {}
 

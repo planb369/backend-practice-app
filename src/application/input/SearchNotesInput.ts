@@ -1,22 +1,15 @@
 import { Notes } from "../../domain/entity/Notes";
+import { Limit } from "../../domain/object/Limit";
+import { Offset } from "../../domain/object/Offset";
+import { QueryParams } from "../../domain/entity/QueryParams";
 
-//usecaseへのインプットの形を決める
-
-//limitとoffsetのパラメータをstringで
-export type QueryParams = {
-  limit: string;
-  offset: string;
-};
-
-//SearchNotesInputクラス
-//上の型定義を引数としたコンストラクタ
+//useCaseで受け付けるものを定義する
 export class SearchNotesInput {
-  constructor(private queryParams: QueryParams) {}
+  constructor(private limit: Limit, private offset: Offset) {}
 
-  //searchNotes関数
+  //repositoryに渡すときの形に整える
   searchNotes() {
-    const notes = new Notes([], 0);
-    //entityで定義したNotesをインスタンス化して返却
-    return notes;
+    const queryParams = new QueryParams(this.limit, this.offset);
+    return queryParams;
   }
 }

@@ -1,11 +1,12 @@
+import { SearchNotesOutput } from "../../../application/output/SearchNotesOutput";
 import { Note } from "../../../domain/entity/Note";
 
 export class SearchNotesResponse {
-  constructor(public notes: Note[], public total: number) {}
-  convertToJson() {
-    return {
-      items: this.notes,
-      total: this.total,
-    };
+  readonly items?: Note[];
+  readonly total?: number;
+
+  constructor(output: SearchNotesOutput) {
+    this.items = output.allNotes;
+    this.total = output.total;
   }
 }

@@ -1,14 +1,26 @@
 import { Request, Response } from "express";
+
 import { FindNoteRequest } from "../transfer/request/FindNoteRequest";
+import { SearchNoteRequest } from "../transfer/request/SearchNotesRequest";
+
 import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
+import { SearchNotesUseCase } from "../../application/usecase/SearchNotesUseCase";
+
 import { FindNoteInput } from "../../application/input/FindNoteInput";
+import { SearchNotesInput } from "../../application/input/SearchNotesInput";
+
 import { FindNoteResponse } from "../transfer/response/FindNoteResponse";
+import { SearchNotesResponse } from "../transfer/response/SearchNotesResponse";
+
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 import { htmlEscape } from "../../utilities/htmlEscape";
 
 export class NoteController {
-  constructor(private readonly findNoteUseCase: FindNoteUseCase) {}
+  constructor(
+    private readonly findNoteUseCase: FindNoteUseCase,
+    private readonly searchNotesUseCase: SearchNotesUseCase
+  ) {}
 
   async find(req: Request, res: Response) {
     try {
@@ -22,6 +34,28 @@ export class NoteController {
     } catch (error) {
       if (error instanceof Error) {
         handleErrors(error, res);
+      }
+    }
+  }
+
+  async search(req: Request, res: Response) {
+    try {
+      //リクエストに渡す
+      const request = new SearchNoteRequest(req);
+
+      //ユースケースに渡す
+      const input = new SearchNotesInput(request.limit, request.offset);
+      //inputからはlimitとoffsetが帰ってくる
+
+      //useCaseからはnotes[]とtotalが帰ってくる
+      const output = await this.searchNotesUseCase.handle(input);
+
+      //レスポンスに渡す
+      const response = new SearchNotesResponse(output);
+      return res.status(HTTP_STATUS_CODES.OK).json(response);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
       }
     }
   }

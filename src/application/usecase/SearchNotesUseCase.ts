@@ -1,18 +1,23 @@
-// import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
-// import { Note } from "../../domain/entity/Note";
+import { SearchNotesInput } from "../input/SearchNotesInput";
+import { SearchNotesOutput } from "../output/SearchNotesOutput";
+import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
 
-// export class SearchNotesUseCase {
-//   async getNotes(
-//     limit: number,
-//     offset: number
-//   ): Promise<{ notes: Note[]; total: number }> {
-//     // 一覧取得のSQL実行
-//     const notes = await NoteRepository.searchNotes(limit, offset);
+export class SearchNotesUseCase {
+  constructor(private readonly noteRepository: NoteRepository) {}
 
-//     // total取得
-//     const total = await NoteRepository.getTotalCount();
+  //関数は基本一つだけ
+  async handle(input: SearchNotesInput) {
+    const note = input.searchNotes();
 
-//     // notes と total を含むオブジェクトを返す
-//     return { notes: notes, total: total };
-//   }
-// }
+    //この時点でパラメータがundefindになってる
+    //requestのバリデーションでデフォルト値を決めるべきか？
+
+    if (note.limit) console.log(note.limit.value);
+
+    //searchはParam型のものを受け取りたい
+    const allNotes = await this.noteRepository.search(note);
+    const total = await NoteRepository.getTotalCount();
+
+    return new SearchNotesOutput(allNotes, total);
+  }
+}
