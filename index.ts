@@ -1,12 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
-import { NoteController } from "./adapter/controller/NoteController";
+import { NoteController } from "./src/adapter/controller/NoteController";
 //ユースケースのインポート
-import { SearchNotesUseCase } from "./application/usecase/SearchNotesUseCase";
-import { CreateNoteUseCase } from "./application/usecase/CreateNoteUseCase";
-import { FindNoteUseCase } from "./application/usecase/FindNoteUseCase";
-import { UpdateNoteUseCase } from "./application/usecase/UpdateNoteUseCase";
-import { DeleteNoteUseCase } from "./application/usecase/DeleteNoteUseCase";
+import { SearchNotesUseCase } from "./src/application/usecase/SearchNotesUseCase";
+import { CreateNoteUseCase } from "./src/application/usecase/CreateNoteUseCase";
+import { FindNoteUseCase } from "./src/application/usecase/FindNoteUseCase";
+import { UpdateNoteUseCase } from "./src/application/usecase/UpdateNoteUseCase";
+import { DeleteNoteUseCase } from "./src/application/usecase/DeleteNoteUseCase";
 
 dotenv.config();
 
