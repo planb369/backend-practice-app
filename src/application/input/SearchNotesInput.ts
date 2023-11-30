@@ -5,11 +5,14 @@ import { QueryParams } from "../../domain/entity/QueryParams";
 
 //useCaseで受け付けるものを定義する
 export class SearchNotesInput {
-  constructor(private limit: Limit, private offset: Offset) {}
+  constructor(private queryParam: QueryParams) {}
 
   //repositoryに渡すときの形に整える
   searchNotes() {
-    const queryParams = new QueryParams(this.limit, this.offset);
+    const queryParams = new QueryParams(
+      this.queryParam.limit,
+      this.queryParam.offset
+    );
     return queryParams;
   }
 }

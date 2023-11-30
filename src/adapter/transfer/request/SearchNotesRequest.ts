@@ -7,6 +7,7 @@ import { QueryParams } from "../../../domain/entity/QueryParams";
 export class SearchNoteRequest {
   readonly limit: Limit;
   readonly offset: Offset;
+  readonly queryParam: QueryParams;
 
   constructor(req: Request) {
     // クエリパラメータから数値に変換
@@ -34,5 +35,6 @@ export class SearchNoteRequest {
 
     this.limit = new Limit(limitValue);
     this.offset = new Offset(offsetValue);
+    this.queryParam = new QueryParams(this.limit, this.offset);
   }
 }
