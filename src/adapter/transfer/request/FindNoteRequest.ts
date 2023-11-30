@@ -1,21 +1,16 @@
+import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
 import { NoteRepository } from "../../../infrastructure/repository/NoteRepository";
 import { NotFoundError } from "../../controller/errors/NotFoundError";
 import { validationId } from "../validation/validationId";
+import { NoteId } from "../../../domain/object/NoteId";
 
 export class FindNoteRequest {
-  constructor(public id: string) {}
+  readonly id: NoteId;
 
-  async validate(): Promise<null> {
-    if (!validationId(this.id)) {
-      throw new BadRequestError("idの値が不正です");
-    }
+  constructor(req: Request) {
+    if (!req.params.id) throw new BadRequestError("id is required");
 
-    const result = await NoteRepository.findNote(this.id);
-
-    if (!result) {
-      throw new NotFoundError(`idが${this.id}のデータは存在しません`);
-    }
-    return null;
+    this.id = new NoteId(req.params.id);
   }
 }

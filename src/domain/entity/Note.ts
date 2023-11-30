@@ -1,12 +1,14 @@
+import { NoteId } from "../object/NoteId";
+
 export class Note {
-  id?: string;
+  id?: NoteId;
   title?: string;
   content?: string;
   createdAt?: string;
   updatedAt?: string;
 
   constructor(
-    id?: string,
+    id?: NoteId,
     title?: string,
     content?: string,
     createdAt?: string,

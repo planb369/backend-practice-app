@@ -1,28 +1,32 @@
 import { Request, Response } from "express";
-import { SearchNotesUseCase } from "../../application/usecase/SearchNotesUseCase";
-import { SearchNotesRequest } from "../transfer/request/SearchNotesRequest";
-import { SearchNotesResponse } from "../transfer/response/SearchNotesResponse";
 import { FindNoteRequest } from "../transfer/request/FindNoteRequest";
 import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
-import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
-import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
-import { UpdateNoteRequest } from "../transfer/request/UpdateNoteRequest";
-import { UpdateNoteUseCase } from "../../application/usecase/UpdateNoteUseCase";
-import { DeleteNoteRequest } from "../transfer/request/DeleteNoteRequest";
-import { DeleteNoteUseCase } from "../../application/usecase/DeleteNoteUseCase";
+import { FindNoteInput } from "../../application/input/FindNoteInput";
+import { FindNoteResponse } from "../transfer/response/FindNoteResponse";
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 import { htmlEscape } from "../../utilities/htmlEscape";
 
 export class NoteController {
-  constructor(
-    private searchNotesUseCase: SearchNotesUseCase,
-    private createNoteUseCase: CreateNoteUseCase,
-    private findNoteUseCase: FindNoteUseCase,
-    private updateNoteUseCase: UpdateNoteUseCase,
-    private deleteNoteUseCase: DeleteNoteUseCase
-  ) {}
+  constructor(private readonly findNoteUseCase: FindNoteUseCase) {}
 
+  async find(req: Request, res: Response) {
+    try {
+      const request = new FindNoteRequest(req);
+
+      const input = new FindNoteInput(request.id);
+      const output = await this.findNoteUseCase.handle(input);
+
+      const response = new FindNoteResponse(output);
+      return res.status(HTTP_STATUS_CODES.OK).json(response);
+    } catch (error) {
+      if (error instanceof Error) {
+        handleErrors(error, res);
+      }
+    }
+  }
+
+  /*
   async getNotes(req: Request, res: Response) {
     try {
       //requestでバリデーション
@@ -132,4 +136,5 @@ export class NoteController {
       }
     }
   }
+  */
 }

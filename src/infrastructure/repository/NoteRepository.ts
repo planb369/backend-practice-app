@@ -1,10 +1,46 @@
 import { Note } from "../../domain/entity/Note";
+import { NoteId } from "../../domain/object/NoteId";
 import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
 import * as mysql from "mysql2";
 import { v4 as uuidv4 } from "uuid";
 
 export class NoteRepository {
+  find(note: Note): Promise<Note | null> {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        `
+          SELECT
+            id
+            ,title
+            ,content
+            ,createdAt
+            ,updatedAt
+          FROM notes
+          WHERE id = ?
+          LIMIT 1
+        `,
+        [note.id?.value],
+        (error, results: RowDataPacket[]) => {
+          if (error) return reject(error);
+          if (results.length < 1) return resolve(null);
+
+          const row = results[0];
+          const note = new Note(
+            new NoteId(row.id),
+            row.title,
+            row.content,
+            row.createdAt,
+            row.updatedAt
+          );
+          return resolve(note);
+        }
+      );
+    });
+  }
+
+  /*
+  // ---------------------------------
   //一覧取得
   static async searchNotes(
     limit: number = 50,
@@ -118,16 +154,17 @@ export class NoteRepository {
       );
     });
   }
+  */
 
   //削除
-  static deleteNote(id: string): Promise<Note> {
-    return new Promise((resolve, reject) => {
-      DB.query("DELETE FROM notes WHERE id = ?", [id], (error) => {
-        if (error) {
-          return reject(error);
-        }
-        return resolve({ id: id });
-      });
-    });
-  }
+  // static deleteNote(id: string): Promise<Note> {
+  //   return new Promise((resolve, reject) => {
+  //     DB.query("DELETE FROM notes WHERE id = ?", [id], (error) => {
+  //       if (error) {
+  //         return reject(error);
+  //       }
+  //       return resolve({ id: id });
+  //     });
+  //   });
+  // }
 }
