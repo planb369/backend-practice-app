@@ -40,17 +40,11 @@ export class NoteController {
 
   async search(req: Request, res: Response) {
     try {
-      //リクエストに渡す
       const request = new SearchNoteRequest(req);
 
-      //ユースケースに渡す
       const input = new SearchNotesInput(request.limit, request.offset);
-      //inputからはlimitとoffsetが帰ってくる
-
-      //useCaseからはnotes[]とtotalが帰ってくる
       const output = await this.searchNotesUseCase.handle(input);
 
-      //レスポンスに渡す
       const response = new SearchNotesResponse(output);
       return res.status(HTTP_STATUS_CODES.OK).json(response);
     } catch (err) {
@@ -61,49 +55,7 @@ export class NoteController {
   }
 
   /*
-  async getNotes(req: Request, res: Response) {
-    try {
-      //requestでバリデーション
-      const request = new SearchNotesRequest(
-        parseInt(req.query.limit as string) || 50,
-        parseInt(req.query.offset as string) || 0
-      );
-      request.validate();
-
-      //ユースケースに渡す
-      const output = await this.searchNotesUseCase.getNotes(
-        request.limit,
-        request.offset
-      );
-
-      //responseで整形して返却
-      const response = new SearchNotesResponse(output.notes, output.total);
-      res.status(HTTP_STATUS_CODES.OK).json(response.convertToJson());
-    } catch (err) {
-      if (err instanceof Error) {
-        handleErrors(err, res);
-      }
-    }
-  }
-
-  async getNoteDetails(req: Request, res: Response) {
-    const id = req.params.id;
-
-    try {
-      //requestでidのバリデーション
-      const request = new FindNoteRequest(id);
-      await request.validate();
-
-      //ユースケースに渡す
-      const output = await this.findNoteUseCase.findNote(request.id);
-
-      res.status(HTTP_STATUS_CODES.OK).json(output.note);
-    } catch (err) {
-      if (err instanceof Error) {
-        handleErrors(err, res);
-      }
-    }
-  }
+  
 
   async createNote(req: Request, res: Response) {
     try {
