@@ -9,11 +9,6 @@ export class SearchNotesUseCase {
   async handle(input: SearchNotesInput) {
     const note = input.searchNotes();
 
-    //この時点でパラメータがundefindになってる
-    //requestのバリデーションでデフォルト値を決めるべきか？
-
-    if (note.limit) console.log(note.limit.value);
-
     //searchはParam型のものを受け取りたい
     const allNotes = await this.noteRepository.search(note);
     const total = await NoteRepository.getTotalCount();
