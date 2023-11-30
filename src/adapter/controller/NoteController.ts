@@ -31,9 +31,9 @@ export class NoteController {
 
       const response = new FindNoteResponse(output);
       return res.status(HTTP_STATUS_CODES.OK).json(response);
-    } catch (error) {
-      if (error instanceof Error) {
-        handleErrors(error, res);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
       }
     }
   }

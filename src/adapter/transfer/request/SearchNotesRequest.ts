@@ -5,8 +5,6 @@ import { Offset } from "../../../domain/object/Offset";
 import { QueryParams } from "../../../domain/entity/QueryParams";
 
 export class SearchNoteRequest {
-  readonly limit: Limit;
-  readonly offset: Offset;
   readonly queryParam: QueryParams;
 
   constructor(req: Request) {
@@ -26,15 +24,11 @@ export class SearchNoteRequest {
     ) {
       throw new BadRequestError("Limitの値が不正です");
     }
-
     if (limitValue > 50) limitValue = 50;
 
-    //定義されていなければデフォルトの値を入れる
-    if (!limitValue) limitValue = 50;
-    if (!offsetValue) offsetValue = 0;
-
-    this.limit = new Limit(limitValue);
-    this.offset = new Offset(offsetValue);
-    this.queryParam = new QueryParams(this.limit, this.offset);
+    this.queryParam = new QueryParams(
+      new Limit(limitValue),
+      new Offset(offsetValue)
+    );
   }
 }
