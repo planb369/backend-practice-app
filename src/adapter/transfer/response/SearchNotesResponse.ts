@@ -6,7 +6,7 @@ export class SearchNotesResponse {
   readonly total?: number;
 
   constructor(output: SearchNotesOutput) {
-    this.items = output.allNotes;
+    this.items = output.items;
     this.total = output.total;
   }
 }

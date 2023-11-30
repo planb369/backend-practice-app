@@ -1,6 +1,3 @@
-import { Notes } from "../../domain/entity/Notes";
-import { Limit } from "../../domain/object/Limit";
-import { Offset } from "../../domain/object/Offset";
 import { QueryParams } from "../../domain/entity/QueryParams";
 
 //useCaseで受け付けるものを定義する
