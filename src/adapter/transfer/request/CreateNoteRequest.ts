@@ -1,23 +1,34 @@
+import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
-import { Request } from "express"; // express の Request 型をインポート
+import { Title } from "../../../domain/object/Title";
+import { Content } from "../../../domain/object/Content";
 import { validationInputDatas } from "../validation/validationInputData";
-
+import { htmlEscape } from "../../../utilities/htmlEscape";
+import { InputDatas } from "../../../domain/entity/InputDatas";
 export class CreateNoteRequest {
-  constructor(public req: Request) {}
+  readonly inputDatas: InputDatas;
 
-  async validate(): Promise<null> {
-    if (!this.req.is("json")) {
+  constructor(req: Request) {
+    if (!req.is("json")) {
       throw new BadRequestError("json形式ではありません");
     }
 
+    //titleとcontentのバリデーション
     const validationError = validationInputDatas(
-      this.req.body.title,
-      this.req.body.content
+      req.body.title,
+      req.body.content
     );
     if (validationError) {
       throw new BadRequestError(validationError);
     }
 
-    return null;
+    //エスケープ処理
+    const escapedTitle = htmlEscape(req.body.title);
+    const escapedContent = htmlEscape(req.body.content);
+
+    this.inputDatas = new InputDatas(
+      new Title(escapedTitle),
+      new Content(escapedContent)
+    );
   }
 }
