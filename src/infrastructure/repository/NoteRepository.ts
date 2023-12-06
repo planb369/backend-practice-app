@@ -44,7 +44,9 @@ export class NoteRepository {
   static getTotalCount(): Promise<number> {
     return new Promise((resolve, reject) => {
       DB.query(
-        "SELECT COUNT(id) as count FROM notes",
+        `SELECT
+        COUNT(id) as count
+        FROM notes`,
         (error, results: mysql.RowDataPacket[]) => {
           if (error) {
             return reject(error); //returnで処理中断させる
@@ -59,7 +61,17 @@ export class NoteRepository {
   search(queryParams: QueryParams): Promise<Note[]> {
     return new Promise((resolve, reject) => {
       DB.query(
-        "SELECT * FROM notes LIMIT ? OFFSET ?",
+        `
+        SELECT
+          id
+          ,title
+          ,content
+          ,createdAt
+          ,updatedAt
+        FROM notes
+        LIMIT ? 
+        OFFSET ?
+        `,
         [queryParams.limit.value, queryParams.offset.value],
         (error, results: RowDataPacket[]) => {
           if (error) {
@@ -87,7 +99,12 @@ export class NoteRepository {
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
 
       DB.query(
-        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+        `
+        INSERT
+        INTO notes
+        (id, title, content, createdAt, updatedAt)
+        VALUES (?, ?, ?, NOW(), NOW())
+        `,
         [uuid, note.title?.value, note.content?.value],
         (error) => {
           if (error) {
@@ -105,7 +122,10 @@ export class NoteRepository {
     console.log(note.id?.value);
     return new Promise((resolve, reject) => {
       DB.query(
-        "UPDATE notes SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
+        `
+        UPDATE notes
+        SET title = ?, content = ?, updatedAt = NOW()
+        WHERE id = ?`,
         [note.title?.value, note.content?.value, note.id?.value],
         (error) => {
           if (error) {
@@ -121,12 +141,20 @@ export class NoteRepository {
   delete(note: Note): Promise<Note> {
     //console.log(note);
     return new Promise((resolve, reject) => {
-      DB.query("DELETE FROM notes WHERE id = ?", [note.id?.value], (error) => {
-        if (error) {
-          return reject(error);
+      DB.query(
+        `
+        DELETE
+        FROM notes
+        WHERE id = ?
+        `,
+        [note.id?.value],
+        (error) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(note);
         }
-        return resolve(note);
-      });
+      );
     });
   }
 }
