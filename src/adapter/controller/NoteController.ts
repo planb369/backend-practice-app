@@ -12,15 +12,21 @@ import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
 import { CreateNoteInput } from "../../application/input/CreateNoteInput";
 import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
 import { CreateNoteResponse } from "../transfer/response/CreateNoteResponse";
+import { UpdateNoteRequest } from "../transfer/request/UpdateNoteRequest";
+import { UpdateNoteInput } from "../../application/input/UpdateNoteInput";
+import { UpdateNoteUseCase } from "../../application/usecase/UpdateNoteUseCase";
+import { UpdateNoteResponse } from "../transfer/response/UpdateNoteResponse";
 
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
+import { UpdateNoteOutput } from "../../application/output/UpdateNoteOutput";
 
 export class NoteController {
   constructor(
     private readonly findNoteUseCase: FindNoteUseCase,
     private readonly searchNotesUseCase: SearchNotesUseCase,
-    private readonly createNoteUseCase: CreateNoteUseCase
+    private readonly createNoteUseCase: CreateNoteUseCase,
+    private readonly updateNoteUseCase: UpdateNoteUseCase
   ) {}
 
   //note取得
@@ -74,24 +80,15 @@ export class NoteController {
     }
   }
 
-  /*
-  async createNote(req: Request, res: Response) {
+  async update(req: Request, res: Response) {
     try {
-      //requestで中身のバリデーション
-      const request = new CreateNoteRequest(req);
-      await request.validate();
+      const request = new UpdateNoteRequest(req);
 
-      //エスケープ処理
-      const escapedTitle = htmlEscape(req.body.title);
-      const escapedContent = htmlEscape(req.body.content);
+      const input = new UpdateNoteInput(request.inputDatas);
+      const output = await this.updateNoteUseCase.handle(input);
 
-      //ユースケースに渡す
-      const output = await this.createNoteUseCase.createNote(
-        escapedTitle,
-        escapedContent
-      );
-
-      res.status(HTTP_STATUS_CODES.CREATED).json(output);
+      const response = new UpdateNoteResponse(output);
+      return res.status(HTTP_STATUS_CODES.OK).json(response);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
@@ -99,6 +96,7 @@ export class NoteController {
     }
   }
 
+  /*
   async updateNote(req: Request, res: Response) {
     try {
       //requestで中身のバリデーション

@@ -1,4 +1,3 @@
-// response/CreateNoteResponse.ts
 import { CreateNoteOutput } from "../../../application/output/CreateNoteOutput";
 
 export class CreateNoteResponse {

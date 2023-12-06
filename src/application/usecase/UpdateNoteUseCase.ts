@@ -1,10 +1,14 @@
-// import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
-// import { Note } from "../../domain/entity/Note";
+import { UpdateNoteInput } from "../input/UpdateNoteInput";
+import { UpdateNoteOutput } from "../output/UpdateNoteOutput";
+import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
 
-// export class UpdateNoteUseCase {
-//   async updateNote(id: string, title: string, content: string): Promise<Note> {
-//     //更新
-//     const note = new Note(id, title, content);
-//     return await NoteRepository.updateNote(note);
-//   }
-// }
+export class UpdateNoteUseCase {
+  constructor(private readonly noteRepository: NoteRepository) {}
+
+  async handle(input: UpdateNoteInput): Promise<UpdateNoteOutput> {
+    const note = input.updateNote();
+    const result = await this.noteRepository.update(note);
+
+    return new UpdateNoteOutput(result);
+  }
+}

@@ -8,7 +8,6 @@ export class CreateNoteInput {
   // Repositoryに渡す用のNoteEntityを生成する
   createNote() {
     const inputDatas = new Note(undefined, this.note.title, this.note.content);
-    console.log(inputDatas);
     return inputDatas;
   }
 }
