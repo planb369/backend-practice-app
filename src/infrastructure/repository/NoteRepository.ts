@@ -1,6 +1,7 @@
 import { NoteId } from "../../domain/object/NoteId";
 import { Note } from "../../domain/entity/Note";
 import { QueryParams } from "../../domain/entity/QueryParams";
+import { NotFoundError } from "../../adapter/controller/errors/NotFoundError";
 import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
 import * as mysql from "mysql2";
@@ -129,8 +130,7 @@ export class NoteRepository {
         [note.title?.value, note.content?.value, note.id?.value],
         (error) => {
           if (error) return reject(error);
-          if (!note.id) return resolve(null);
-
+          if (!note.id) throw new NotFoundError("IDが見つかりません");
           return resolve(note.id);
         }
       );
@@ -138,7 +138,7 @@ export class NoteRepository {
   }
 
   //削除
-  delete(note: Note): Promise<Note> {
+  delete(note: Note): Promise<NoteId> {
     //console.log(note);
     return new Promise((resolve, reject) => {
       DB.query(
@@ -149,10 +149,9 @@ export class NoteRepository {
         `,
         [note.id?.value],
         (error) => {
-          if (error) {
-            return reject(error);
-          }
-          return resolve(note);
+          if (error) return reject(error);
+          if (!note.id) throw new NotFoundError("IDが見つかりません");
+          return resolve(note.id);
         }
       );
     });

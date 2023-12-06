@@ -7,7 +7,7 @@ export class DeleteNoteUseCase {
 
   //関数は基本一つだけ
   async handle(input: DeleteNoteInput) {
-    const note = input.getNote();
+    const note = input.deleteNote();
 
     const result = await this.noteRepository.delete(note);
     return new DeleteNoteOutput(result);

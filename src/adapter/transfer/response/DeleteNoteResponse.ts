@@ -5,7 +5,7 @@ export class DeleteNoteResponse {
 
   constructor(output: DeleteNoteOutput) {
     if (output.item) {
-      this.id = output.item.id?.value;
+      this.id = output.item.value;
     }
   }
 }

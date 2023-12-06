@@ -1,5 +1,5 @@
-import { Note } from "../../domain/entity/Note";
+import { NoteId } from "../../domain/object/NoteId";
 
 export class DeleteNoteOutput {
-  constructor(readonly item: Note | null) {}
+  constructor(readonly item: NoteId) {}
 }
