@@ -3,6 +3,7 @@ import { BadRequestError } from "../../controller/errors/BadRequestError";
 import { validationInputDatas } from "../validation/validationInputData";
 import { validationId } from "../validation/validationId";
 import { Note } from "../../../domain/entity/Note";
+import { NoteId } from "../../../domain/object/NoteId";
 import { htmlEscape } from "../../../utilities/htmlEscape";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
@@ -33,8 +34,10 @@ export class UpdateNoteRequest {
     const escapedContent = htmlEscape(req.body.content);
 
     const note = new Note();
+    note.id = new NoteId(id);
     note.title = new Title(escapedTitle);
     note.content = new Content(escapedContent);
+    console.log(note);
     //inputDatasにnoteを割り当てる
     this.inputDatas = note;
   }

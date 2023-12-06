@@ -129,8 +129,7 @@ export class NoteRepository {
         [note.title?.value, note.content?.value, note.id?.value],
         (error) => {
           if (error) return reject(error);
-          console.log(note.id?.value);
-          if (!note.id) return reject(error);
+          if (!note.id) throw new NotFoundError("IDが見つかりません");
           return resolve(note.id);
         }
       );
