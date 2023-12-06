@@ -9,10 +9,9 @@ export class SearchNotesUseCase {
   async handle(input: SearchNotesInput) {
     const note = input.searchNotes();
 
-    //searchはParam型のものを受け取りたい
-    const allNotes = await this.noteRepository.search(note);
+    const items = await this.noteRepository.search(note);
     const total = await NoteRepository.getTotalCount();
 
-    return new SearchNotesOutput(allNotes, total);
+    return new SearchNotesOutput(items, total);
   }
 }
