@@ -138,7 +138,6 @@ export class NoteRepository {
 
   //削除
   delete(note: Note): Promise<NoteId> {
-    //console.log(note);
     return new Promise((resolve, reject) => {
       DB.query(
         `
