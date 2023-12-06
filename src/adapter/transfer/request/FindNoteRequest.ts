@@ -9,15 +9,17 @@ export class FindNoteRequest {
   readonly id: NoteId;
 
   constructor(req: Request) {
-    if (!req.params.id) throw new BadRequestError("id is required");
-    if (!validationId(req.params.id)) {
+    const id = req.params.id;
+
+    if (!id) throw new BadRequestError("id is required");
+    if (!validationId(id)) {
       throw new BadRequestError("idの値が不正です");
     }
     const result = NoteRepository.getTotalCount();
     if (!result) {
-      throw new NotFoundError(`idが${req.params.id}のデータは存在しません`);
+      throw new NotFoundError(`idが${id}のデータは存在しません`);
     }
 
-    this.id = new NoteId(req.params.id);
+    this.id = new NoteId(id);
   }
 }
