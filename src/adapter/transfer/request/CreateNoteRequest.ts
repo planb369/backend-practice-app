@@ -27,13 +27,10 @@ export class CreateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    // Note エンティティのインスタンスを作成
-    this.inputDatas = new Note(
-      undefined,
-      new Title(escapedTitle),
-      new Content(escapedContent),
-      undefined,
-      undefined
-    );
+    const note = new Note();
+    note.title = new Title(escapedTitle);
+    note.content = new Content(escapedContent);
+    //inputDatasにnoteを割り当てる
+    this.inputDatas = note;
   }
 }

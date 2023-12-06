@@ -4,7 +4,6 @@ import { validationInputDatas } from "../validation/validationInputData";
 import { validationId } from "../validation/validationId";
 import { Note } from "../../../domain/entity/Note";
 import { htmlEscape } from "../../../utilities/htmlEscape";
-import { NoteId } from "../../../domain/object/NoteId";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
 
@@ -33,12 +32,10 @@ export class UpdateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    this.inputDatas = new Note(
-      new NoteId(id),
-      new Title(escapedTitle),
-      new Content(escapedContent),
-      undefined,
-      undefined
-    );
+    const note = new Note();
+    note.title = new Title(escapedTitle);
+    note.content = new Content(escapedContent);
+    //inputDatasにnoteを割り当てる
+    this.inputDatas = note;
   }
 }

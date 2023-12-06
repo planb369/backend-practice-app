@@ -120,7 +120,6 @@ export class NoteRepository {
 
   //編集
   update(note: Note): Promise<NoteId | null> {
-    console.log(note.id?.value);
     return new Promise((resolve, reject) => {
       DB.query(
         `
@@ -130,7 +129,8 @@ export class NoteRepository {
         [note.title?.value, note.content?.value, note.id?.value],
         (error) => {
           if (error) return reject(error);
-          if (!note.id) throw new NotFoundError("IDが見つかりません");
+          console.log(note.id?.value);
+          if (!note.id) return reject(error);
           return resolve(note.id);
         }
       );
