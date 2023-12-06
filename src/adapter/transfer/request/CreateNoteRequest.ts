@@ -14,7 +14,7 @@ export class CreateNoteRequest {
       throw new BadRequestError("json形式ではありません");
     }
 
-    //titleとcontentのバリデーション
+    // titleとcontentのバリデーション
     const validationError = validationInputDatas(
       req.body.title,
       req.body.content
@@ -23,13 +23,17 @@ export class CreateNoteRequest {
       throw new BadRequestError(validationError);
     }
 
-    //エスケープ処理
+    // エスケープ処理
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
+    // Note エンティティのインスタンスを作成
     this.inputDatas = new Note(
+      undefined,
       new Title(escapedTitle),
-      new Content(escapedContent)
+      new Content(escapedContent),
+      undefined,
+      undefined
     );
   }
 }

@@ -1,6 +1,5 @@
 import { NoteId } from "../../domain/object/NoteId";
 import { Note } from "../../domain/entity/Note";
-import { InputDatas } from "../../domain/entity/InputDatas";
 import { QueryParams } from "../../domain/entity/QueryParams";
 import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
