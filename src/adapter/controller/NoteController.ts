@@ -16,17 +16,21 @@ import { UpdateNoteRequest } from "../transfer/request/UpdateNoteRequest";
 import { UpdateNoteInput } from "../../application/input/UpdateNoteInput";
 import { UpdateNoteUseCase } from "../../application/usecase/UpdateNoteUseCase";
 import { UpdateNoteResponse } from "../transfer/response/UpdateNoteResponse";
+import { DeleteNoteRequest } from "../transfer/request/DeleteNoteRequest";
+import { DeleteNoteInput } from "../../application/input/DeleteNoteInput";
+import { DeleteNoteUseCase } from "../../application/usecase/DeleteNoteUseCase";
+import { DeleteNoteResponse } from "../transfer/response/DeleteNoteResponse";
 
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
-import { UpdateNoteOutput } from "../../application/output/UpdateNoteOutput";
 
 export class NoteController {
   constructor(
     private readonly findNoteUseCase: FindNoteUseCase,
     private readonly searchNotesUseCase: SearchNotesUseCase,
     private readonly createNoteUseCase: CreateNoteUseCase,
-    private readonly updateNoteUseCase: UpdateNoteUseCase
+    private readonly updateNoteUseCase: UpdateNoteUseCase,
+    private readonly deleteNoteUseCase: DeleteNoteUseCase
   ) {}
 
   //note取得
@@ -96,47 +100,19 @@ export class NoteController {
     }
   }
 
-  /*
-  async updateNote(req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     try {
-      //requestで中身のバリデーション
-      const request = new UpdateNoteRequest(req);
-      await request.validate();
+      const request = new DeleteNoteRequest(req);
 
-      //エスケープ処理
-      const escapedTitle = htmlEscape(req.body.title);
-      const escapedContent = htmlEscape(req.body.content);
+      const input = new DeleteNoteInput(request.id);
+      const output = await this.deleteNoteUseCase.handle(input);
 
-      //ユースケースに渡す
-      const output = await this.updateNoteUseCase.updateNote(
-        req.params.id,
-        escapedTitle,
-        escapedContent
-      );
-
-      res.status(HTTP_STATUS_CODES.CREATED).json(output);
+      const response = new DeleteNoteResponse(output);
+      return res.status(HTTP_STATUS_CODES.OK).json(response);
     } catch (err) {
       if (err instanceof Error) {
         handleErrors(err, res);
       }
     }
   }
-
-  async deleteNote(req: Request, res: Response) {
-    try {
-      //requestで中身のバリデーション
-      const request = new DeleteNoteRequest(req.params.id);
-      await request.validate();
-
-      //ユースケースに渡す
-      const output = await this.deleteNoteUseCase.deleteNote(req.params.id);
-
-      res.status(HTTP_STATUS_CODES.OK).json(output);
-    } catch (err) {
-      if (err instanceof Error) {
-        handleErrors(err, res);
-      }
-    }
-  }
-  */
 }

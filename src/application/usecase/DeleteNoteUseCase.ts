@@ -1,8 +1,15 @@
-// import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
+import { DeleteNoteInput } from "../input/DeleteNoteInput";
+import { DeleteNoteOutput } from "../output/DeleteNoteOutput";
+import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
 
-// export class DeleteNoteUseCase {
-//   async deleteNote(id: string): Promise<string> {
-//     await NoteRepository.deleteNote(id);
-//     return id;
-//   }
-// }
+export class DeleteNoteUseCase {
+  constructor(private readonly noteRepository: NoteRepository) {}
+
+  //関数は基本一つだけ
+  async handle(input: DeleteNoteInput) {
+    const note = input.getNote();
+
+    const result = await this.noteRepository.delete(note);
+    return new DeleteNoteOutput(result);
+  }
+}

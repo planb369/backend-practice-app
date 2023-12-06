@@ -7,6 +7,7 @@ import { FindNoteUseCase } from "./src/application/usecase/FindNoteUseCase";
 import { SearchNotesUseCase } from "./src/application/usecase/SearchNotesUseCase";
 import { CreateNoteUseCase } from "./src/application/usecase/CreateNoteUseCase";
 import { UpdateNoteUseCase } from "./src/application/usecase/UpdateNoteUseCase";
+import { DeleteNoteUseCase } from "./src/application/usecase/DeleteNoteUseCase";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ const findNoteUseCase = new FindNoteUseCase(noteRepository);
 const searchNotesUseCase = new SearchNotesUseCase(noteRepository);
 const createNoteUseCase = new CreateNoteUseCase(noteRepository);
 const updateNoteUseCase = new UpdateNoteUseCase(noteRepository);
+const deleteNoteUseCase = new DeleteNoteUseCase(noteRepository);
 // --- usecase ---
 
 // --- controller ---
@@ -37,7 +39,8 @@ const noteController = new NoteController(
   findNoteUseCase,
   searchNotesUseCase,
   createNoteUseCase,
-  updateNoteUseCase
+  updateNoteUseCase,
+  deleteNoteUseCase
 );
 // --- controller ---
 
@@ -46,6 +49,7 @@ app.get("/api/notes/:id", noteController.find.bind(noteController));
 app.get("/api/notes/", noteController.search.bind(noteController));
 app.post("/api/notes/", noteController.create.bind(noteController));
 app.put("/api/notes/:id", noteController.update.bind(noteController));
+app.delete("/api/notes/:id", noteController.delete.bind(noteController));
 // --- ルーティング ---
 
 app.listen(port, () => {
