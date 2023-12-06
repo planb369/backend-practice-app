@@ -1,16 +1,16 @@
-import { FindNoteOutput } from "../../../application/output/FindNoteOutput";
+import { CreateNoteOutput } from "../../../application/output/CreateNoteOutput";
 
-export class FindNoteResponse {
+export class CreateNoteResponse {
   readonly id?: string;
   readonly title?: string;
   readonly content?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
 
-  constructor(output: FindNoteOutput) {
+  constructor(output: CreateNoteOutput) {
     this.id = output.item?.id?.value;
-    this.content = output.item?.content?.value;
     this.title = output.item?.title?.value;
+    this.content = output.item?.content?.value;
     this.createdAt = output.item?.createdAt?.value;
     this.updatedAt = output.item?.updatedAt?.value;
   }

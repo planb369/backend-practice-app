@@ -5,6 +5,7 @@ import { NoteRepository } from "./src/infrastructure/repository/NoteRepository";
 
 import { FindNoteUseCase } from "./src/application/usecase/FindNoteUseCase";
 import { SearchNotesUseCase } from "./src/application/usecase/SearchNotesUseCase";
+import { CreateNoteUseCase } from "./src/application/usecase/CreateNoteUseCase";
 
 dotenv.config();
 
@@ -26,15 +27,21 @@ const noteRepository = new NoteRepository();
 // --- usecase ---
 const findNoteUseCase = new FindNoteUseCase(noteRepository);
 const searchNotesUseCase = new SearchNotesUseCase(noteRepository);
+const createNoteUseCase = new CreateNoteUseCase(noteRepository);
 // --- usecase ---
 
 // --- controller ---
-const noteController = new NoteController(findNoteUseCase, searchNotesUseCase);
+const noteController = new NoteController(
+  findNoteUseCase,
+  searchNotesUseCase,
+  createNoteUseCase
+);
 // --- controller ---
 
 // --- ルーティング ---
 app.get("/api/notes/:id", noteController.find.bind(noteController));
 app.get("/api/notes/", noteController.search.bind(noteController));
+app.post("/api/notes/", noteController.create.bind(noteController));
 // --- ルーティング ---
 
 app.listen(port, () => {

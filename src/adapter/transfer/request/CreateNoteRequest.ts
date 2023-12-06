@@ -1,10 +1,11 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
+import { validationInputDatas } from "../validation/validationInputData";
+import { InputDatas } from "../../../domain/entity/InputDatas";
+import { htmlEscape } from "../../../utilities/htmlEscape";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
-import { validationInputDatas } from "../validation/validationInputData";
-import { htmlEscape } from "../../../utilities/htmlEscape";
-import { InputDatas } from "../../../domain/entity/InputDatas";
+
 export class CreateNoteRequest {
   readonly inputDatas: InputDatas;
 

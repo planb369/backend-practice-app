@@ -1,6 +1,7 @@
-import { Note } from "../../domain/entity/Note";
-import { QueryParams } from "../../domain/entity/QueryParams";
 import { NoteId } from "../../domain/object/NoteId";
+import { Note } from "../../domain/entity/Note";
+import { InputDatas } from "../../domain/entity/InputDatas";
+import { QueryParams } from "../../domain/entity/QueryParams";
 import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
 import * as mysql from "mysql2";
@@ -82,56 +83,23 @@ export class NoteRepository {
     });
   }
 
-  //詳細情報の取得
-  // static findNote(id: string): Promise<Note | null> {
-  //   return new Promise((resolve, reject) => {
-  //     DB.query(
-  //       "SELECT * FROM notes WHERE id = ?",
-  //       [id],
-  //       (error, results: mysql.RowDataPacket[]) => {
-  //         //該当データがデータベースにないとき
-  //         if (results.length === 0) {
-  //           return resolve(null);
-  //         }
-  //         if (error) {
-  //           return reject(error);
-  //         }
+  save(inputDatas: InputDatas): Promise<NoteId> {
+    return new Promise((resolve, reject) => {
+      const uuid = uuidv4().replace(/-/g, "").toUpperCase();
 
-  //         //データベースに対象データがあったとき
-  //         const row = results[0];
-  //         //マッピングするためにNodeをインスタンス化
-  //         const note = new Note(
-  //           row.id,
-  //           row.title,
-  //           row.content,
-  //           row.createdAt,
-  //           row.updatedAt
-  //         );
-
-  //         return resolve(note);
-  //       }
-  //     );
-  //   });
-  // }
-
-  // データ送信
-  // static saveNote(note: Note): Promise<string> {
-  //   return new Promise((resolve, reject) => {
-  //     //UUID生成
-  //     const uuid = uuidv4().replace(/-/g, "").toUpperCase();
-
-  //     DB.query(
-  //       "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
-  //       [uuid, note.title, note.content],
-  //       (error) => {
-  //         if (error) {
-  //           return reject(error); //returnで処理中断させる
-  //         }
-  //         return resolve(uuid);
-  //       }
-  //     );
-  //   });
-  // }
+      DB.query(
+        "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
+        [uuid, inputDatas.title.value, inputDatas.content.value],
+        (error) => {
+          if (error) {
+            return reject(error);
+          }
+          //NoteIdでマッピング
+          return resolve(new NoteId(uuid));
+        }
+      );
+    });
+  }
 
   //編集
   // static updateNote(note: Note): Promise<Note> {

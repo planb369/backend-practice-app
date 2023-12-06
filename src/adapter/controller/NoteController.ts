@@ -1,27 +1,29 @@
 import { Request, Response } from "express";
 
 import { FindNoteRequest } from "../transfer/request/FindNoteRequest";
-import { SearchNoteRequest } from "../transfer/request/SearchNotesRequest";
-
-import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
-import { SearchNotesUseCase } from "../../application/usecase/SearchNotesUseCase";
-
 import { FindNoteInput } from "../../application/input/FindNoteInput";
-import { SearchNotesInput } from "../../application/input/SearchNotesInput";
-
+import { FindNoteUseCase } from "../../application/usecase/FindNoteUseCase";
 import { FindNoteResponse } from "../transfer/response/FindNoteResponse";
+import { SearchNoteRequest } from "../transfer/request/SearchNotesRequest";
+import { SearchNotesInput } from "../../application/input/SearchNotesInput";
+import { SearchNotesUseCase } from "../../application/usecase/SearchNotesUseCase";
 import { SearchNotesResponse } from "../transfer/response/SearchNotesResponse";
+import { CreateNoteRequest } from "../transfer/request/CreateNoteRequest";
+import { CreateNoteInput } from "../../application/input/CreateNoteInput";
+import { CreateNoteUseCase } from "../../application/usecase/CreateNoteUseCase";
+import { CreateNoteResponse } from "../transfer/response/CreateNoteResponse";
 
 import { handleErrors } from "./errors/handleErrors";
 import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
-import { htmlEscape } from "../../utilities/htmlEscape";
 
 export class NoteController {
   constructor(
     private readonly findNoteUseCase: FindNoteUseCase,
-    private readonly searchNotesUseCase: SearchNotesUseCase
+    private readonly searchNotesUseCase: SearchNotesUseCase,
+    private readonly createNoteUseCase: CreateNoteUseCase
   ) {}
 
+  //note取得
   async find(req: Request, res: Response) {
     try {
       const request = new FindNoteRequest(req);
@@ -38,6 +40,7 @@ export class NoteController {
     }
   }
 
+  //一覧取得
   async search(req: Request, res: Response) {
     try {
       const request = new SearchNoteRequest(req);
@@ -54,9 +57,24 @@ export class NoteController {
     }
   }
 
-  /*
-  
+  //作成
+  async create(req: Request, res: Response) {
+    try {
+      const request = new CreateNoteRequest(req);
 
+      const input = new CreateNoteInput(request.inputDatas);
+      const output = await this.createNoteUseCase.handle(input);
+
+      const response = new CreateNoteResponse(output);
+      return res.status(HTTP_STATUS_CODES.CREATED).json(response);
+    } catch (err) {
+      if (err instanceof Error) {
+        handleErrors(err, res);
+      }
+    }
+  }
+
+  /*
   async createNote(req: Request, res: Response) {
     try {
       //requestで中身のバリデーション

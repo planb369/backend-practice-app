@@ -1,15 +1,17 @@
-// import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
-// import { Note } from "../../domain/entity/Note";
+import { CreateNoteInput } from "../input/CreateNoteInput";
+import { CreateNoteOutput } from "../output/CreateNoteOutput";
+import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
+import { NoteId } from "../../domain/object/NoteId";
 
-// export class CreateNoteUseCase {
-//   async createNote(title: string, content: string): Promise<Note | null> {
-//     const note = new Note();
-//     note.title = title;
-//     note.content = content;
+export class CreateNoteUseCase {
+  constructor(private readonly noteRepository: NoteRepository) {}
 
-//     const id = await NoteRepository.saveNote(note);
+  async handle(input: CreateNoteInput): Promise<CreateNoteOutput> {
+    const note = input.createNote();
+    const noteId = await this.noteRepository.save(note);
 
-//     //idからデータを取得
-//     return await NoteRepository.findNote(id);
-//   }
-// }
+    // インスタンスメソッドを介してidからデータを取得
+    const result = await this.noteRepository.find(note);
+    return new CreateNoteOutput(result);
+  }
+}
