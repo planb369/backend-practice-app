@@ -8,8 +8,6 @@ export class FindNoteResponse {
   readonly updatedAt;
 
   constructor(output: FindNoteOutput) {
-    console.log(output); // デバッグ: 出力内容を確認
-
     this.id = output.item?.id?.value;
     this.content = output.item?.content;
     this.title = output.item?.title;
