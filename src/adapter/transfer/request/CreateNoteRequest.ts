@@ -1,13 +1,13 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
 import { validationInputDatas } from "../validation/validationInputData";
-import { InputDatas } from "../../../domain/entity/InputDatas";
+import { Note } from "../../../domain/entity/Note";
 import { htmlEscape } from "../../../utilities/htmlEscape";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
 
 export class CreateNoteRequest {
-  readonly inputDatas: InputDatas;
+  readonly inputDatas: Note;
 
   constructor(req: Request) {
     if (!req.is("json")) {
@@ -27,7 +27,7 @@ export class CreateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    this.inputDatas = new InputDatas(
+    this.inputDatas = new Note(
       new Title(escapedTitle),
       new Content(escapedContent)
     );
