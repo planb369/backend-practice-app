@@ -5,7 +5,7 @@ export class UpdateNoteResponse {
 
   constructor(output: UpdateNoteOutput) {
     if (output.item) {
-      this.id = output.item.id?.value;
+      this.id = output.item.value;
     }
   }
 }

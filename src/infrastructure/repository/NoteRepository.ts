@@ -118,7 +118,7 @@ export class NoteRepository {
   }
 
   //編集
-  update(note: Note): Promise<Note> {
+  update(note: Note): Promise<NoteId | null> {
     console.log(note.id?.value);
     return new Promise((resolve, reject) => {
       DB.query(
@@ -128,10 +128,10 @@ export class NoteRepository {
         WHERE id = ?`,
         [note.title?.value, note.content?.value, note.id?.value],
         (error) => {
-          if (error) {
-            return reject(error); //returnで処理中断させる
-          }
-          return resolve(note);
+          if (error) return reject(error);
+          if (!note.id) return resolve(null);
+
+          return resolve(note.id);
         }
       );
     });
