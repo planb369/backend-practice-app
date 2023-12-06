@@ -22,7 +22,7 @@ export class SearchNoteRequest {
       isNaN(offsetValue) ||
       offsetValue < 0
     ) {
-      throw new BadRequestError("Limitの値が不正です");
+      throw new BadRequestError("リクエストパラメータの値が不正です");
     }
     if (limitValue > 50) limitValue = 50;
 
