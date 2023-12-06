@@ -83,13 +83,13 @@ export class NoteRepository {
     });
   }
 
-  save(inputDatas: InputDatas): Promise<NoteId> {
+  save(note: Note): Promise<NoteId> {
     return new Promise((resolve, reject) => {
       const uuid = uuidv4().replace(/-/g, "").toUpperCase();
 
       DB.query(
         "INSERT INTO notes (id, title, content, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())",
-        [uuid, inputDatas.title.value, inputDatas.content.value],
+        [uuid, note.title?.value, note.content?.value],
         (error) => {
           if (error) {
             return reject(error);
