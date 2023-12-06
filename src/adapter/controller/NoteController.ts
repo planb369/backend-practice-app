@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { handleErrors } from "./errors/handleErrors";
+import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 
 import { FindNoteRequest } from "../transfer/request/FindNoteRequest";
 import { FindNoteInput } from "../../application/input/FindNoteInput";
@@ -20,9 +22,6 @@ import { DeleteNoteRequest } from "../transfer/request/DeleteNoteRequest";
 import { DeleteNoteInput } from "../../application/input/DeleteNoteInput";
 import { DeleteNoteUseCase } from "../../application/usecase/DeleteNoteUseCase";
 import { DeleteNoteResponse } from "../transfer/response/DeleteNoteResponse";
-
-import { handleErrors } from "./errors/handleErrors";
-import { HTTP_STATUS_CODES } from "./httpStatus/HTTP_STATUS_CODES";
 
 export class NoteController {
   constructor(
