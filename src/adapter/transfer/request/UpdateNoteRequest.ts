@@ -37,7 +37,6 @@ export class UpdateNoteRequest {
     note.id = new NoteId(id);
     note.title = new Title(escapedTitle);
     note.content = new Content(escapedContent);
-    console.log(note);
     //inputDatasにnoteを割り当てる
     this.inputDatas = note;
   }
