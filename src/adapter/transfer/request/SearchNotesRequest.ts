@@ -1,8 +1,10 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
 import { Notes } from "../../../domain/entity/Notes";
+
 export class SearchNoteRequest {
-  readonly notes: Notes;
+  readonly limit: number;
+  readonly offset: number;
 
   constructor(req: Request) {
     // クエリパラメータから数値に変換
@@ -23,8 +25,7 @@ export class SearchNoteRequest {
     }
     if (limitValue > 50) limitValue = 50;
 
-    this.notes = new Notes([], 0);
-    this.notes.limit = limitValue;
-    this.notes.offset = offsetValue;
+    this.limit = limitValue;
+    this.offset = offsetValue;
   }
 }

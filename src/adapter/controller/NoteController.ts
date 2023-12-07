@@ -52,7 +52,7 @@ export class NoteController {
     try {
       const request = new SearchNoteRequest(req);
 
-      const input = new SearchNotesInput(request.notes);
+      const input = new SearchNotesInput(request.limit, request.offset);
       const output = await this.searchNotesUseCase.handle(input);
 
       const response = new SearchNotesResponse(output);
