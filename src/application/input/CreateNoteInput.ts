@@ -3,8 +3,8 @@ import { Content } from "../../domain/object/Content";
 import { Note } from "../../domain/entity/Note";
 
 export class CreateNoteInput {
-  private readonly title: Title;
-  private readonly content: Content;
+  readonly title: Title;
+  readonly content: Content;
 
   constructor(title: Title, content: Content) {
     this.title = title;

@@ -84,7 +84,11 @@ export class NoteController {
     try {
       const request = new UpdateNoteRequest(req);
 
-      const input = new UpdateNoteInput(request.note);
+      const input = new UpdateNoteInput(
+        request.id,
+        request.title,
+        request.content
+      );
       const output = await this.updateNoteUseCase.handle(input);
 
       const response = new UpdateNoteResponse(output);

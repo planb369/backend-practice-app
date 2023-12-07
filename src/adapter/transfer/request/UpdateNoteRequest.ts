@@ -9,7 +9,9 @@ import { Content } from "../../../domain/object/Content";
 import { NoteId } from "../../../domain/object/NoteId";
 
 export class UpdateNoteRequest {
-  readonly note: Note;
+  readonly id: NoteId;
+  readonly title: Title;
+  readonly content: Content;
 
   constructor(req: Request) {
     if (!req.is("json")) {
@@ -33,9 +35,8 @@ export class UpdateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    this.note = new Note();
-    this.note.id = new NoteId(id);
-    this.note.title = new Title(escapedTitle);
-    this.note.content = new Content(escapedContent);
+    this.id = new NoteId(id);
+    this.title = new Title(escapedTitle);
+    this.content = new Content(escapedContent);
   }
 }
