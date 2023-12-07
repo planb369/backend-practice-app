@@ -68,7 +68,7 @@ export class NoteController {
     try {
       const request = new CreateNoteRequest(req);
 
-      const input = new CreateNoteInput(request.note);
+      const input = new CreateNoteInput(request.title, request.content);
       const output = await this.createNoteUseCase.handle(input);
 
       const response = new CreateNoteResponse(output);

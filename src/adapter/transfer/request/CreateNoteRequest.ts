@@ -4,10 +4,10 @@ import { validationInputDatas } from "../validation/validationInputData";
 import { htmlEscape } from "../../../utilities/htmlEscape";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
-import { Note } from "../../../domain/entity/Note";
 
 export class CreateNoteRequest {
-  readonly note: Note;
+  readonly title: Title;
+  readonly content: Content;
 
   constructor(req: Request) {
     if (!req.is("json")) {
@@ -27,8 +27,7 @@ export class CreateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    this.note = new Note();
-    this.note.title = new Title(escapedTitle);
-    this.note.content = new Content(escapedContent);
+    this.title = new Title(escapedTitle);
+    this.content = new Content(escapedContent);
   }
 }
