@@ -6,9 +6,9 @@ export class SearchNotesInput {
 
   //repositoryに渡すときの形に整える
   getNotes() {
-    const notes = new Notes();
-    notes.limit = this.notes.limit;
-    notes.offset = this.notes.offset;
-    return notes;
+    const note = new Notes();
+    note.limit = this.notes.limit;
+    note.offset = this.notes.offset;
+    return note;
   }
 }
