@@ -49,16 +49,15 @@ export class NoteRepository {
         COUNT(id) as count
         FROM notes`,
         (error, results: mysql.RowDataPacket[]) => {
-          if (error) {
-            return reject(error); //returnで処理中断させる
-          }
+          if (error) return reject(error);
+
           return resolve(results[0]["count"]);
         }
       );
     });
   }
 
-  //一覧取得 entityのNotesを引数に持たせる
+  //一覧取得
   search(queryParams: QueryParams): Promise<Note[]> {
     return new Promise((resolve, reject) => {
       DB.query(
@@ -75,10 +74,8 @@ export class NoteRepository {
         `,
         [queryParams.limit.value, queryParams.offset.value],
         (error, results: RowDataPacket[]) => {
-          if (error) {
-            return reject(error);
-          }
-          //Noteをインスタンス化してマッピング
+          if (error) return reject(error);
+
           const notes = results.map(
             (row) =>
               new Note(
@@ -108,10 +105,8 @@ export class NoteRepository {
         `,
         [uuid, note.title?.value, note.content?.value],
         (error) => {
-          if (error) {
-            return reject(error);
-          }
-          //NoteIdでマッピング
+          if (error) return reject(error);
+
           return resolve(new NoteId(uuid));
         }
       );
@@ -130,6 +125,7 @@ export class NoteRepository {
         (error) => {
           if (error) return reject(error);
           if (!note.id) throw new NotFoundError("IDが見つかりません");
+
           return resolve(note.id);
         }
       );
@@ -149,6 +145,7 @@ export class NoteRepository {
         (error) => {
           if (error) return reject(error);
           if (!note.id) throw new NotFoundError("IDが見つかりません");
+
           return resolve(note.id);
         }
       );
