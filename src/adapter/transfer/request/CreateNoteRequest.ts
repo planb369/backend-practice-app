@@ -1,10 +1,10 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
 import { validationInputDatas } from "../validation/validationInputData";
-import { Note } from "../../../domain/entity/Note";
 import { htmlEscape } from "../../../utilities/htmlEscape";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
+import { Note } from "../../../domain/entity/Note";
 
 export class CreateNoteRequest {
   readonly inputDatas: Note;
@@ -27,10 +27,8 @@ export class CreateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    const note = new Note();
-    note.title = new Title(escapedTitle);
-    note.content = new Content(escapedContent);
-    //inputDatasにnoteを割り当てる
-    this.inputDatas = note;
+    this.inputDatas = new Note();
+    this.inputDatas.title = new Title(escapedTitle);
+    this.inputDatas.content = new Content(escapedContent);
   }
 }

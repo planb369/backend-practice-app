@@ -26,7 +26,5 @@ export class SearchNoteRequest {
     this.notes = new Notes([], 0);
     this.notes.limit = limitValue;
     this.notes.offset = offsetValue;
-    //ここでは取れてる
-    //console.log(this.notes.limit);
   }
 }
