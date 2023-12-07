@@ -32,7 +32,6 @@ export class NoteController {
     private readonly deleteNoteUseCase: DeleteNoteUseCase
   ) {}
 
-  //note取得
   async find(req: Request, res: Response) {
     try {
       const request = new FindNoteRequest(req);
@@ -49,7 +48,6 @@ export class NoteController {
     }
   }
 
-  //一覧取得
   async search(req: Request, res: Response) {
     try {
       const request = new SearchNoteRequest(req);
@@ -66,12 +64,11 @@ export class NoteController {
     }
   }
 
-  //作成
   async create(req: Request, res: Response) {
     try {
       const request = new CreateNoteRequest(req);
 
-      const input = new CreateNoteInput(request.inputDatas);
+      const input = new CreateNoteInput(request.note);
       const output = await this.createNoteUseCase.handle(input);
 
       const response = new CreateNoteResponse(output);
@@ -87,7 +84,7 @@ export class NoteController {
     try {
       const request = new UpdateNoteRequest(req);
 
-      const input = new UpdateNoteInput(request.inputDatas);
+      const input = new UpdateNoteInput(request.note);
       const output = await this.updateNoteUseCase.handle(input);
 
       const response = new UpdateNoteResponse(output);

@@ -9,7 +9,7 @@ import { Content } from "../../../domain/object/Content";
 import { NoteId } from "../../../domain/object/NoteId";
 
 export class UpdateNoteRequest {
-  readonly inputDatas: Note;
+  readonly note: Note;
 
   constructor(req: Request) {
     if (!req.is("json")) {
@@ -33,9 +33,9 @@ export class UpdateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    this.inputDatas = new Note();
-    this.inputDatas.id = new NoteId(id);
-    this.inputDatas.title = new Title(escapedTitle);
-    this.inputDatas.content = new Content(escapedContent);
+    this.note = new Note();
+    this.note.id = new NoteId(id);
+    this.note.title = new Title(escapedTitle);
+    this.note.content = new Content(escapedContent);
   }
 }

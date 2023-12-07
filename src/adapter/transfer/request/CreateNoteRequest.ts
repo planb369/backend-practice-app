@@ -7,7 +7,7 @@ import { Content } from "../../../domain/object/Content";
 import { Note } from "../../../domain/entity/Note";
 
 export class CreateNoteRequest {
-  readonly inputDatas: Note;
+  readonly note: Note;
 
   constructor(req: Request) {
     if (!req.is("json")) {
@@ -27,8 +27,8 @@ export class CreateNoteRequest {
     const escapedTitle = htmlEscape(req.body.title);
     const escapedContent = htmlEscape(req.body.content);
 
-    this.inputDatas = new Note();
-    this.inputDatas.title = new Title(escapedTitle);
-    this.inputDatas.content = new Content(escapedContent);
+    this.note = new Note();
+    this.note.title = new Title(escapedTitle);
+    this.note.content = new Content(escapedContent);
   }
 }
