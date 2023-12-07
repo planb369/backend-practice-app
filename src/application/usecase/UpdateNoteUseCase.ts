@@ -7,7 +7,7 @@ export class UpdateNoteUseCase {
   constructor(private readonly noteRepository: NoteRepository) {}
 
   async handle(input: UpdateNoteInput): Promise<UpdateNoteOutput> {
-    const note = input.updateNote();
+    const note = input.getNote();
     const result = await this.noteRepository.update(note);
     if (!result) {
       throw new NotFoundError("データが存在しません");

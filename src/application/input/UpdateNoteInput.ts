@@ -4,7 +4,7 @@ export class UpdateNoteInput {
   constructor(private readonly note: Note) {}
 
   // Repositoryに渡す用のNoteEntityを生成する
-  updateNote() {
+  getNote() {
     const inputDatas = new Note();
     inputDatas.id = this.note.id;
     inputDatas.title = this.note.title;

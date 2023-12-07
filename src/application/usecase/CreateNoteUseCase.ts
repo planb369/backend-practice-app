@@ -6,7 +6,7 @@ export class CreateNoteUseCase {
   constructor(private readonly noteRepository: NoteRepository) {}
 
   async handle(input: CreateNoteInput): Promise<CreateNoteOutput> {
-    const note = input.createNote();
+    const note = input.getNote();
     note.id = await this.noteRepository.save(note);
 
     // インスタンスメソッドを介してidからデータを取得

@@ -5,7 +5,7 @@ export class SearchNotesInput {
   constructor(private queryParam: QueryParams) {}
 
   //repositoryに渡すときの形に整える
-  searchNotes() {
+  getQueryParams() {
     const queryParams = new QueryParams(
       this.queryParam.limit,
       this.queryParam.offset

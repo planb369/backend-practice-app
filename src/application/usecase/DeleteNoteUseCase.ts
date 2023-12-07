@@ -8,7 +8,7 @@ export class DeleteNoteUseCase {
 
   //関数は基本一つだけ
   async handle(input: DeleteNoteInput) {
-    const note = input.deleteNote();
+    const note = input.getNote();
     const result = await this.noteRepository.delete(note);
     if (!result) {
       throw new NotFoundError("データが存在しません");

@@ -8,7 +8,7 @@ export class FindNoteUseCase {
 
   //関数は基本一つだけ
   async handle(input: FindNoteInput) {
-    const note = input.findNote();
+    const note = input.getNote();
     const result = await this.noteRepository.find(note);
     if (!result) {
       throw new NotFoundError("データが存在しません");
