@@ -45,7 +45,11 @@ export class NoteRepository {
   getTotalCount(notes: Notes): Promise<Notes> {
     return new Promise((resolve, reject) => {
       DB.query(
-        `SELECT COUNT(id) as count FROM notes`,
+        `
+          SELECT
+          COUNT(id) as count
+          FROM notes
+        `,
         (error, results: mysql.RowDataPacket[]) => {
           if (error) return reject(error);
 
@@ -62,15 +66,15 @@ export class NoteRepository {
     return new Promise((resolve, reject) => {
       DB.query(
         `
-        SELECT
-          id
-          ,title
-          ,content
-          ,createdAt
-          ,updatedAt
-        FROM notes
-        LIMIT ?
-        OFFSET ?
+          SELECT
+            id
+            ,title
+            ,content
+            ,createdAt
+            ,updatedAt
+          FROM notes
+          LIMIT ?
+          OFFSET ?
         `,
         [notes.limit, notes.offset],
         (error, results: RowDataPacket[]) => {
@@ -100,10 +104,10 @@ export class NoteRepository {
 
       DB.query(
         `
-        INSERT
-        INTO notes
-        (id, title, content, createdAt, updatedAt)
-        VALUES (?, ?, ?, NOW(), NOW())
+          INSERT
+          INTO notes
+          (id, title, content, createdAt, updatedAt)
+          VALUES (?, ?, ?, NOW(), NOW())
         `,
         [uuid, note.title?.value, note.content?.value],
         (error) => {
@@ -120,9 +124,10 @@ export class NoteRepository {
     return new Promise((resolve, reject) => {
       DB.query(
         `
-        UPDATE notes
-        SET title = ?, content = ?, updatedAt = NOW()
-        WHERE id = ?`,
+          UPDATE notes
+          SET title = ?, content = ?, updatedAt = NOW()
+          WHERE id = ?
+        `,
         [note.title?.value, note.content?.value, note.id?.value],
         (error) => {
           if (error) return reject(error);
@@ -139,9 +144,9 @@ export class NoteRepository {
     return new Promise((resolve, reject) => {
       DB.query(
         `
-        DELETE
-        FROM notes
-        WHERE id = ?
+          DELETE
+          FROM notes
+          WHERE id = ?
         `,
         [note.id?.value],
         (error) => {
