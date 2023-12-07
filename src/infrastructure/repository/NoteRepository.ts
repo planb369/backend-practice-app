@@ -42,23 +42,23 @@ export class NoteRepository {
   }
 
   // データの個数を数える
-  static getTotalCount(): Promise<number> {
+  getTotalCount(notes: Notes): Promise<Notes> {
     return new Promise((resolve, reject) => {
       DB.query(
-        `SELECT
-        COUNT(id) as count
-        FROM notes`,
+        `SELECT COUNT(id) as count FROM notes`,
         (error, results: mysql.RowDataPacket[]) => {
           if (error) return reject(error);
 
-          return resolve(results[0]["count"]);
+          //totalをset
+          notes.total = results[0]["count"];
+          return resolve(notes);
         }
       );
     });
   }
 
   //一覧取得
-  search(notes: Notes): Promise<Note[]> {
+  search(notes: Notes): Promise<Notes> {
     return new Promise((resolve, reject) => {
       DB.query(
         `
@@ -69,14 +69,14 @@ export class NoteRepository {
           ,createdAt
           ,updatedAt
         FROM notes
-        LIMIT ? 
+        LIMIT ?
         OFFSET ?
         `,
         [notes.limit, notes.offset],
         (error, results: RowDataPacket[]) => {
           if (error) return reject(error);
 
-          const notes = results.map(
+          const items = results.map(
             (row) =>
               new Note(
                 row.id,
@@ -86,7 +86,9 @@ export class NoteRepository {
                 row.updatedAt
               )
           );
-          resolve(notes); //配列で返す
+          //itemsをset
+          notes.items = items;
+          resolve(notes);
         }
       );
     });

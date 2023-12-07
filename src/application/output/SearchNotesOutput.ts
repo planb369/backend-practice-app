@@ -1,5 +1,5 @@
-import { Note } from "../../domain/entity/Note";
+import { Notes } from "../../domain/entity/Notes";
 
 export class SearchNotesOutput {
-  constructor(readonly items: Note[], readonly total: number) {}
+  constructor(readonly notes: Notes) {}
 }

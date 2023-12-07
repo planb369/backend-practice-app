@@ -8,6 +8,7 @@ export class CreateNoteUseCase {
 
   async handle(input: CreateNoteInput): Promise<CreateNoteOutput> {
     const note = input.getNote();
+
     note.id = await this.noteRepository.save(note);
 
     // インスタンスメソッドを介してidからデータを取得

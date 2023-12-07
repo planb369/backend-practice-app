@@ -1,8 +1,6 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
-import { Note } from "../../../domain/entity/Note";
 import { Notes } from "../../../domain/entity/Notes";
-
 export class SearchNoteRequest {
   readonly notes: Notes;
 
@@ -25,8 +23,10 @@ export class SearchNoteRequest {
     }
     if (limitValue > 50) limitValue = 50;
 
-    this.notes = new Notes();
+    this.notes = new Notes([], 0);
     this.notes.limit = limitValue;
     this.notes.offset = offsetValue;
+    //ここでは取れてる
+    //console.log(this.notes.limit);
   }
 }

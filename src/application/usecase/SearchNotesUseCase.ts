@@ -1,17 +1,18 @@
 import { SearchNotesInput } from "../input/SearchNotesInput";
 import { SearchNotesOutput } from "../output/SearchNotesOutput";
 import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
-
 export class SearchNotesUseCase {
   constructor(private readonly noteRepository: NoteRepository) {}
 
-  //関数は基本一つだけ
-  async handle(input: SearchNotesInput) {
-    const note = input.getNotes();
+  async handle(input: SearchNotesInput): Promise<SearchNotesOutput> {
+    const notes = input.getNotes();
 
-    const items = await this.noteRepository.search(note);
-    const total = await NoteRepository.getTotalCount();
+    const searchResult = await this.noteRepository.search(notes);
+    const totalResults = await this.noteRepository.getTotalCount(notes);
 
-    return new SearchNotesOutput(items, total);
+    notes.items = searchResult.items;
+    notes.total = totalResults.total;
+
+    return new SearchNotesOutput(notes);
   }
 }
