@@ -5,10 +5,10 @@ export class UpdateNoteInput {
 
   // Repositoryに渡す用のNoteEntityを生成する
   getNote() {
-    const inputDatas = new Note();
-    inputDatas.id = this.note.id;
-    inputDatas.title = this.note.title;
-    inputDatas.content = this.note.content;
-    return inputDatas;
+    const notes = new Note();
+    notes.id = this.note.id;
+    notes.title = this.note.title;
+    notes.content = this.note.content;
+    return notes;
   }
 }

@@ -4,9 +4,9 @@ export class CreateNoteInput {
   constructor(private readonly note: Note) {}
 
   getNote() {
-    const inputDatas = new Note();
-    inputDatas.title = this.note.title;
-    inputDatas.content = this.note.content;
-    return inputDatas;
+    const notes = new Note();
+    notes.title = this.note.title;
+    notes.content = this.note.content;
+    return notes;
   }
 }
