@@ -1,15 +1,12 @@
-import { QueryParams } from "../../domain/entity/QueryParams";
+import { Notes } from "../../domain/entity/Notes";
 
 //useCaseで受け付けるものを定義する
 export class SearchNotesInput {
-  constructor(private queryParam: QueryParams) {}
+  constructor(private notes: Notes) {}
 
   //repositoryに渡すときの形に整える
-  getQueryParams() {
-    const queryParams = new QueryParams(
-      this.queryParam.limit,
-      this.queryParam.offset
-    );
-    return queryParams;
+  getNotes() {
+    const notes = new Notes(this.notes.limit, this.notes.offset);
+    return notes;
   }
 }

@@ -1,6 +1,6 @@
 import { NoteId } from "../../domain/object/NoteId";
 import { Note } from "../../domain/entity/Note";
-import { QueryParams } from "../../domain/entity/QueryParams";
+import { Notes } from "../../domain/entity/Notes";
 import { NotFoundError } from "../../adapter/controller/errors/NotFoundError";
 import DB from "../../config/DB";
 import { RowDataPacket } from "mysql2";
@@ -58,7 +58,7 @@ export class NoteRepository {
   }
 
   //一覧取得
-  search(queryParams: QueryParams): Promise<Note[]> {
+  search(notes: Notes): Promise<Note[]> {
     return new Promise((resolve, reject) => {
       DB.query(
         `
@@ -72,7 +72,7 @@ export class NoteRepository {
         LIMIT ? 
         OFFSET ?
         `,
-        [queryParams.limit.value, queryParams.offset.value],
+        [notes.limit, notes.offset],
         (error, results: RowDataPacket[]) => {
           if (error) return reject(error);
 

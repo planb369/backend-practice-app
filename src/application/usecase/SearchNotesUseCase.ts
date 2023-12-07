@@ -7,7 +7,7 @@ export class SearchNotesUseCase {
 
   //関数は基本一つだけ
   async handle(input: SearchNotesInput) {
-    const note = input.getQueryParams();
+    const note = input.getNotes();
 
     const items = await this.noteRepository.search(note);
     const total = await NoteRepository.getTotalCount();

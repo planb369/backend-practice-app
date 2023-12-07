@@ -1,11 +1,10 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
-import { Limit } from "../../../domain/object/Limit";
-import { Offset } from "../../../domain/object/Offset";
-import { QueryParams } from "../../../domain/entity/QueryParams";
+import { Note } from "../../../domain/entity/Note";
+import { Notes } from "../../../domain/entity/Notes";
 
 export class SearchNoteRequest {
-  readonly queryParam: QueryParams;
+  readonly notes: Notes;
 
   constructor(req: Request) {
     // クエリパラメータから数値に変換
@@ -26,9 +25,8 @@ export class SearchNoteRequest {
     }
     if (limitValue > 50) limitValue = 50;
 
-    this.queryParam = new QueryParams(
-      new Limit(limitValue),
-      new Offset(offsetValue)
-    );
+    this.notes = new Notes();
+    this.notes.limit = limitValue;
+    this.notes.offset = offsetValue;
   }
 }
