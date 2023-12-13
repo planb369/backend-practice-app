@@ -6,7 +6,7 @@ import { NotFoundError } from "../../adapter/controller/errors/NotFoundError";
 export class UpdateNoteUseCase {
   constructor(private readonly noteRepository: NoteRepository) {}
 
-  async handle(input: UpdateNoteInput): Promise<UpdateNoteOutput> {
+  async handle(input: UpdateNoteInput) {
     const note = input.getNote();
 
     const targetNote = await this.noteRepository.find(note);

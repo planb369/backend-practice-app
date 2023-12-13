@@ -4,7 +4,7 @@ import { NoteRepository } from "../../infrastructure/repository/NoteRepository";
 export class SearchNotesUseCase {
   constructor(private readonly noteRepository: NoteRepository) {}
 
-  async handle(input: SearchNotesInput): Promise<SearchNotesOutput> {
+  async handle(input: SearchNotesInput) {
     const notes = input.getNotes();
 
     const searchResult = await this.noteRepository.search(notes);
