@@ -8,7 +8,6 @@ export class UpdateNoteUseCase {
 
   async handle(input: UpdateNoteInput): Promise<UpdateNoteOutput> {
     const note = input.getNote();
-    console.log(note);
 
     const targetNote = await this.noteRepository.find(note);
     if (!targetNote) {
