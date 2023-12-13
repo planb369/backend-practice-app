@@ -1,6 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
-import routes from "./routes/router";
+import { NoteController } from "./src/adapter/controller/NoteController";
+import { NoteRepository } from "./src/infrastructure/repository/NoteRepository";
+
+import { FindNoteUseCase } from "./src/application/usecase/FindNoteUseCase";
+import { SearchNotesUseCase } from "./src/application/usecase/SearchNotesUseCase";
+import { CreateNoteUseCase } from "./src/application/usecase/CreateNoteUseCase";
+import { UpdateNoteUseCase } from "./src/application/usecase/UpdateNoteUseCase";
+import { DeleteNoteUseCase } from "./src/application/usecase/DeleteNoteUseCase";
 
 dotenv.config();
 
@@ -14,8 +21,37 @@ app.use(
   })
 );
 
-app.use("/", routes);
+// 初期化
+// --- repository ---
+const noteRepository = new NoteRepository();
+// --- repository ---
+
+// --- usecase ---
+const findNoteUseCase = new FindNoteUseCase(noteRepository);
+const searchNotesUseCase = new SearchNotesUseCase(noteRepository);
+const createNoteUseCase = new CreateNoteUseCase(noteRepository);
+const updateNoteUseCase = new UpdateNoteUseCase(noteRepository);
+const deleteNoteUseCase = new DeleteNoteUseCase(noteRepository);
+// --- usecase ---
+
+// --- controller ---
+const noteController = new NoteController(
+  findNoteUseCase,
+  searchNotesUseCase,
+  createNoteUseCase,
+  updateNoteUseCase,
+  deleteNoteUseCase
+);
+// --- controller ---
+
+// --- ルーティング ---
+app.get("/api/notes/:id", noteController.find.bind(noteController));
+app.get("/api/notes/", noteController.search.bind(noteController));
+app.post("/api/notes/", noteController.create.bind(noteController));
+app.put("/api/notes/:id", noteController.update.bind(noteController));
+app.delete("/api/notes/:id", noteController.delete.bind(noteController));
+// --- ルーティング ---
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log("start");
 });
