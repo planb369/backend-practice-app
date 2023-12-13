@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
-import { Notes } from "../../../domain/entity/Notes";
 
 export class SearchNoteRequest {
   readonly limit: number;

@@ -2,7 +2,6 @@ import { Request } from "express";
 import { BadRequestError } from "../../controller/errors/BadRequestError";
 import { validationInputDatas } from "../validation/validationInputData";
 import { validationId } from "../validation/validationId";
-import { Note } from "../../../domain/entity/Note";
 import { htmlEscape } from "../../../utilities/htmlEscape";
 import { Title } from "../../../domain/object/Title";
 import { Content } from "../../../domain/object/Content";
