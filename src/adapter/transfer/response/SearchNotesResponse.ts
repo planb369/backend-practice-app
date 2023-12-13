@@ -7,7 +7,7 @@ export class SearchNotesResponse {
 
   constructor(output: SearchNotesOutput) {
     // output.notes から items と total を取得
-    this.items = output.notes.items;
-    this.total = output.notes.total;
+    this.items = output.item.items;
+    this.total = output.item.total;
   }
 }
